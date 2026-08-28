@@ -1,0 +1,114 @@
+<script lang="ts">
+	import { resolve } from '$app/paths';
+	import { Button } from '$lib/components/ui/button/index.js';
+	import { Card, CardContent } from '$lib/components/ui/card/index.js';
+	import { Checkbox } from '$lib/components/ui/checkbox/index.js';
+	import { Badge } from '$lib/components/ui/badge/index.js';
+	import CheckIcon from '@lucide/svelte/icons/check';
+	import type { ActionData, PageData } from './$types';
+
+	let { data, form }: { data: PageData; form: ActionData } = $props();
+
+	let selected = $state<string[]>([]);
+
+	function toggle(playerId: string, checked: boolean) {
+		if (checked) {
+			if (selected.length < 2) selected = [...selected, playerId];
+		} else {
+			selected = selected.filter((id) => id !== playerId);
+		}
+	}
+</script>
+
+<div class="page">
+	<div class="flex flex-col items-center gap-1 text-center">
+		<Badge>Matchday vote</Badge>
+		<h1 class="font-display text-3xl">{data.title}</h1>
+	</div>
+
+	{#if form?.success}
+		<Card>
+			<CardContent class="items-center gap-2 py-10 text-center">
+				<div class="bg-primary/15 text-primary rounded-full p-4">
+					<CheckIcon class="size-8" strokeWidth={3} />
+				</div>
+				<p class="text-lg font-semibold">Thanks for voting!</p>
+				<p class="text-muted-foreground">Results will be shown once the survey is closed.</p>
+			</CardContent>
+		</Card>
+	{:else if data.status === 'upcoming'}
+		<Card>
+			<CardContent class="items-center py-10 text-center">
+				<p class="text-muted-foreground">Voting hasn't opened yet for this match. Check back soon.</p>
+			</CardContent>
+		</Card>
+	{:else if data.status === 'closed'}
+		<Card>
+			<CardContent class="items-center gap-4 py-10 text-center">
+				<p class="text-muted-foreground">Voting has closed for this match.</p>
+				<Button href={resolve('/(app)/s/[slug]/results', { slug: data.slug })} variant="secondary">
+					See results
+				</Button>
+			</CardContent>
+		</Card>
+	{:else if data.alreadyVoted}
+		<Card>
+			<CardContent class="items-center py-10 text-center">
+				<p class="text-muted-foreground">You've already voted in this survey. Thanks!</p>
+			</CardContent>
+		</Card>
+	{:else}
+		<div class="flex items-center justify-between px-1">
+			<p class="text-muted-foreground text-sm font-bold tracking-wide uppercase">
+				Tap 2 players
+			</p>
+			<div class="flex gap-1.5">
+				{#each [0, 1] as i (i)}
+					<div
+						class={[
+							'flex size-7 items-center justify-center rounded-full text-sm font-bold',
+							i < selected.length
+								? 'bg-primary text-primary-foreground'
+								: 'bg-secondary text-muted-foreground'
+						]}
+					>
+						{i + 1}
+					</div>
+				{/each}
+			</div>
+		</div>
+
+		<form method="POST" class="flex flex-col gap-4">
+			<div class="flex flex-col gap-3">
+				{#each data.roster as player (player.id)}
+					{@const isSelected = selected.includes(player.id)}
+					{@const isDisabled = !isSelected && selected.length >= 2}
+					<label
+						class={[
+							'flex items-center gap-4 rounded-2xl border-2 px-5 py-4 transition-colors',
+							isSelected
+								? 'border-primary bg-primary/10'
+								: 'border-border bg-card',
+							isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
+						]}
+					>
+						<Checkbox
+							name="playerIds"
+							value={player.id}
+							checked={isSelected}
+							disabled={isDisabled}
+							onCheckedChange={(checked) => toggle(player.id, checked === true)}
+						/>
+						<span class="text-lg font-semibold">{player.firstName} {player.lastName}</span>
+					</label>
+				{/each}
+			</div>
+
+			{#if form?.error}
+				<p class="text-destructive text-center font-medium">{form.error}</p>
+			{/if}
+
+			<Button type="submit" size="lg" disabled={selected.length !== 2}>Vote now</Button>
+		</form>
+	{/if}
+</div>
