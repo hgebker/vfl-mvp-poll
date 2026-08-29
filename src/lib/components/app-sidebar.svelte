@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { resolve } from '$app/paths';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import Plus from '@lucide/svelte/icons/plus';
 	import Users from '@lucide/svelte/icons/users';
@@ -41,7 +42,7 @@
 					<Sidebar.MenuItem>
 						<Sidebar.MenuButton isActive={page.url.pathname === '/'}>
 							{#snippet child({ props })}
-								<a href="/" onclick={closeOnMobile} {...props}>
+								<a href={resolve('/(app)')} onclick={closeOnMobile} {...props}>
 									<House />
 									<span>Home</span>
 								</a>
@@ -51,7 +52,7 @@
 					<Sidebar.MenuItem>
 						<Sidebar.MenuButton isActive={page.url.pathname === '/create'}>
 							{#snippet child({ props })}
-								<a href="/create" onclick={closeOnMobile} {...props}>
+								<a href={resolve('/(app)/create')} onclick={closeOnMobile} {...props}>
 									<Plus />
 									<span>Create survey</span>
 								</a>
@@ -61,7 +62,7 @@
 					<Sidebar.MenuItem>
 						<Sidebar.MenuButton isActive={page.url.pathname === '/admin/players'}>
 							{#snippet child({ props })}
-								<a href="/admin/players" onclick={closeOnMobile} {...props}>
+								<a href={resolve('/(app)/admin/players')} onclick={closeOnMobile} {...props}>
 									<Users />
 									<span>Players</span>
 								</a>
@@ -84,7 +85,7 @@
 								<Sidebar.MenuButton isActive={page.params.slug === survey.slug}>
 									{#snippet child({ props })}
 										<a
-											href="/s/{survey.slug}/manage"
+											href={resolve('/(app)/s/[slug]/manage', { slug: survey.slug })}
 											title={survey.title}
 											onclick={closeOnMobile}
 											{...props}

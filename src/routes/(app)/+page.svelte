@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import * as Item from '$lib/components/ui/item/index.js';
 	import PlusIcon from '@lucide/svelte/icons/plus';
 	import UsersIcon from '@lucide/svelte/icons/users';
@@ -6,13 +7,13 @@
 
 	const links = [
 		{
-			href: '/create',
+			href: resolve('/(app)/create'),
 			icon: PlusIcon,
 			title: 'Create a survey',
 			description: 'Set up a new MVP vote for your players.'
 		},
 		{
-			href: '/admin/players',
+			href: resolve('/(app)/admin/players'),
 			icon: UsersIcon,
 			title: 'Manage players',
 			description: 'Add, edit, or remove the players who can be voted for.'

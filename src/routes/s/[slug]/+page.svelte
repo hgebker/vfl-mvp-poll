@@ -3,7 +3,6 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Card, CardContent } from '$lib/components/ui/card/index.js';
 	import { Checkbox } from '$lib/components/ui/checkbox/index.js';
-	import { Badge } from '$lib/components/ui/badge/index.js';
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import type { ActionData, PageData } from './$types';
 
