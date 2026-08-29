@@ -80,7 +80,8 @@
 	<Card>
 		<CardHeader>
 			<CardTitle>Controls</CardTitle>
-			<CardDescription>Open voting when you're ready, then close it once everyone has voted.</CardDescription
+			<CardDescription
+				>Open voting when you're ready, then close it once everyone has voted.</CardDescription
 			>
 		</CardHeader>
 

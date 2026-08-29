@@ -22,8 +22,7 @@
 	<CardHeader>
 		<CardTitle>Match roster - {players.length} players</CardTitle>
 		<CardDescription>
-			The players eligible to receive votes in this survey, ranked by vote count once voting
-			closes.
+			The players eligible to receive votes in this survey, ranked by vote count once voting closes.
 		</CardDescription>
 	</CardHeader>
 

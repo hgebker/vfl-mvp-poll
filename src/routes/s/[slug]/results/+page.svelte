@@ -53,7 +53,10 @@
 							format: (value: string) => value.replace(' ', '\n'),
 							tickLabelProps: { lineHeight: '1.1em' }
 						},
-						labels: { class: 'text-[10px]', format: (value: number) => Math.round(value).toString() }
+						labels: {
+							class: 'text-[10px]',
+							format: (value: number) => Math.round(value).toString()
+						}
 					}}
 				></BarChart>
 			</ChartContainer>
