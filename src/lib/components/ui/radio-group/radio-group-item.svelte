@@ -1,28 +1,28 @@
 <script lang="ts">
-	import { RadioGroup as RadioGroupPrimitive } from 'bits-ui';
-	import { cn } from '$lib/utils.js';
+	import { RadioGroup as RadioGroupPrimitive } from "bits-ui";
+	import CircleIcon from '@lucide/svelte/icons/circle';
+	import { cn, type WithoutChildrenOrChild } from "$lib/utils.js";
 
 	let {
 		ref = $bindable(null),
-		value,
 		class: className,
 		...restProps
-	}: RadioGroupPrimitive.ItemProps = $props();
+	}: WithoutChildrenOrChild<RadioGroupPrimitive.ItemProps> = $props();
 </script>
 
 <RadioGroupPrimitive.Item
 	bind:ref
-	{value}
+	data-slot="radio-group-item"
 	class={cn(
-		'border-input text-primary focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 aria-invalid:border-destructive data-[state=checked]:border-primary aspect-square size-6 shrink-0 rounded-full border-2 shadow-xs transition-shadow outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50',
+		"flex size-4 rounded-full border border-transparent bg-input/90 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary group/radio-group-item peer relative aspect-square shrink-0 border outline-none after:absolute after:-inset-x-3 after:-inset-y-2 disabled:cursor-not-allowed disabled:opacity-50",
 		className
 	)}
 	{...restProps}
 >
 	{#snippet children({ checked })}
-		<div class="flex h-full w-full items-center justify-center">
+		<div data-slot="radio-group-indicator" class="flex size-4 items-center justify-center">
 			{#if checked}
-				<div class="bg-primary size-3 rounded-full"></div>
+				<CircleIcon class="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-foreground dark:size-2.5" />
 			{/if}
 		</div>
 	{/snippet}

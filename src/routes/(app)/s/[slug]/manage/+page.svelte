@@ -4,8 +4,16 @@
 	import { resolve } from '$app/paths';
 	import { toast } from 'svelte-sonner';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { Card, CardContent } from '$lib/components/ui/card/index.js';
-	import { Badge } from '$lib/components/ui/badge/index.js';
+	import {
+		Card,
+		CardContent,
+		CardHeader,
+		CardTitle,
+		CardDescription
+	} from '$lib/components/ui/card/index.js';
+	import { Badge, type BadgeVariant } from '$lib/components/ui/badge/index.js';
+	import SelectedPlayers from '$lib/components/selected-players.svelte';
+	import SurveyNavTabs from '$lib/components/survey-nav-tabs.svelte';
 	import CopyIcon from '@lucide/svelte/icons/copy';
 	import type { ActionData, PageData } from './$types';
 
@@ -22,24 +30,41 @@
 		toast.success('Link copied');
 	}
 
-	const statusVariant = { upcoming: 'secondary', open: 'success', closed: 'outline' } as const;
+	const statusVariant: Record<string, BadgeVariant> = {
+		upcoming: 'secondary',
+		open: 'default',
+		closed: 'destructive'
+	};
 </script>
 
+<svelte:head>
+	<title>{data.title}</title>
+</svelte:head>
+
 <div class="page">
+	<SurveyNavTabs />
+
 	<div class="flex flex-col items-center gap-2 text-center">
-		<h1 class="font-display text-3xl">{data.title}</h1>
+		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{data.title}</h3>
 		<Badge variant={statusVariant[data.status]}>{data.status}</Badge>
 	</div>
 
 	<Card>
-		<CardContent>
-			<h2 class="font-display text-xl">Share link</h2>
+		<CardHeader>
+			<CardTitle>Public link</CardTitle>
+			<CardDescription
+				>Share this link or QR code with your players so they can cast their vote.</CardDescription
+			>
+		</CardHeader>
+
+		<CardContent class="flex flex-col gap-4">
 			<div class="bg-secondary/60 flex items-center gap-2 rounded-2xl p-3">
 				<code class="flex-1 overflow-hidden text-sm text-ellipsis">{data.shareUrl}</code>
 				<Button variant="secondary" size="icon" onclick={copyLink} aria-label="Copy link">
 					<CopyIcon class="size-4" />
 				</Button>
 			</div>
+
 			{#if qrDataUrl}
 				<img
 					class="border-border mx-auto rounded-2xl border"
@@ -53,8 +78,13 @@
 	</Card>
 
 	<Card>
+		<CardHeader>
+			<CardTitle>Controls</CardTitle>
+			<CardDescription>Open voting when you're ready, then close it once everyone has voted.</CardDescription
+			>
+		</CardHeader>
+
 		<CardContent>
-			<h2 class="font-display text-xl">Controls</h2>
 			{#if form?.error}
 				<p class="text-destructive text-center font-medium">{form.error}</p>
 			{/if}
@@ -66,14 +96,13 @@
 			{:else if data.status === 'open'}
 				<form method="POST" action="?/transition">
 					<input type="hidden" name="next" value="closed" />
-					<Button type="submit" size="lg" variant="destructive" class="w-full">Close voting</Button
-					>
+					<Button type="submit" size="lg" variant="destructive" class="w-full">Close voting</Button>
 				</form>
 			{:else}
 				<p class="text-muted-foreground text-center">
 					Voting is closed.
 					<a
-						href={resolve('/(app)/s/[slug]/results', { slug: data.slug })}
+						href={resolve('/s/[slug]/results', { slug: data.slug })}
 						class="text-primary underline"
 					>
 						See results
@@ -82,4 +111,6 @@
 			{/if}
 		</CardContent>
 	</Card>
+
+	<SelectedPlayers players={data.roster} />
 </div>

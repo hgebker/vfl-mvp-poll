@@ -22,7 +22,7 @@ export const actions: Actions = {
 		if (!valid) return fail(400, { error: 'Wrong passcode.' });
 
 		setSessionCookie(cookies, team.id);
-		const redirectTo = url.searchParams.get('redirectTo') ?? '/create';
+		const redirectTo = url.searchParams.get('redirectTo') ?? '/';
 		throw redirect(303, redirectTo);
 	}
 };

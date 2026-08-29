@@ -2,7 +2,13 @@
 	import { resolve } from '$app/paths';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Calendar } from '$lib/components/ui/calendar/index.js';
-	import { Card, CardContent } from '$lib/components/ui/card/index.js';
+	import {
+		Card,
+		CardContent,
+		CardHeader,
+		CardTitle,
+		CardDescription
+	} from '$lib/components/ui/card/index.js';
 	import { Checkbox } from '$lib/components/ui/checkbox/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
@@ -22,12 +28,23 @@
 	let homeAway = $state('home');
 </script>
 
+<svelte:head>
+	<title>New poll</title>
+</svelte:head>
+
 <div class="page">
-	<h1 class="font-display text-center text-3xl">New match survey</h1>
+	<div class="flex flex-col items-center gap-2 text-center">
+		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">New poll</h3>
+	</div>
 
 	<form method="POST" class="flex flex-col gap-4">
 		<Card>
-			<CardContent>
+			<CardHeader>
+				<CardTitle>Match Details</CardTitle>
+				<CardDescription>Enter basic details about the match.</CardDescription>
+			</CardHeader>
+
+			<CardContent class="flex flex-col gap-4">
 				<div class="flex flex-col gap-2">
 					<Label for="opponent">Opponent</Label>
 					<Input id="opponent" name="opponent" bind:value={opponent} required />
@@ -41,7 +58,10 @@
 								<Button
 									{...props}
 									variant="outline"
-									class={cn('justify-start text-left font-normal', !matchDate && 'text-muted-foreground')}
+									class={cn(
+										'justify-start text-left font-normal',
+										!matchDate && 'text-muted-foreground'
+									)}
 								>
 									<CalendarIcon />
 									{matchDate ? df.format(matchDate.toDate(getLocalTimeZone())) : 'Pick a date'}
@@ -75,18 +95,23 @@
 		</Card>
 
 		<Card>
-			<CardContent>
-				<h2 class="font-display text-xl">Roster for this match</h2>
-				<p class="text-muted-foreground text-sm">
+			<CardHeader>
+				<CardTitle>Match Roster</CardTitle>
+				<CardDescription>
 					Pick who's votable — visitors will choose two of these players as MVP.
-				</p>
+				</CardDescription>
+			</CardHeader>
+
+			<CardContent>
 				{#if data.players.length === 0}
 					<p class="text-muted-foreground text-sm">
 						No active players yet. Add some in
-						<a href={resolve('/(app)/admin/players')} class="text-primary underline">player admin</a>
+						<a href={resolve('/(app)/admin/players')} class="text-primary underline">player admin</a
+						>
 						first.
 					</p>
 				{/if}
+
 				<div class="flex flex-col gap-2">
 					{#each data.players as player (player.id)}
 						<Label

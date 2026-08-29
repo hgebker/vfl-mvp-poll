@@ -13,8 +13,14 @@
 	let lastName = $state('');
 </script>
 
+<svelte:head>
+	<title>Players</title>
+</svelte:head>
+
 <div class="page">
-	<h1 class="font-display text-center text-3xl">Players</h1>
+	<div class="flex flex-col items-center gap-2 text-center">
+		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">Players</h3>
+	</div>
 
 	<Card>
 		<CardContent>

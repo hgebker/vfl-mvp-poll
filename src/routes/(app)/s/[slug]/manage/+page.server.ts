@@ -2,7 +2,7 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
 import { requireTeam } from '$lib/server/auth';
-import { getSurveyBySlug, surveyTitle } from '$lib/server/domain/surveys';
+import { getSurveyBySlug, getSurveyRoster, surveyTitle } from '$lib/server/domain/surveys';
 import { InvalidTransitionError, transition } from '$lib/server/domain/status';
 import type { SurveyStatus } from '$lib/server/db/schema';
 
@@ -16,7 +16,8 @@ export const load: PageServerLoad = ({ params, locals, url }) => {
 		slug: survey.slug,
 		title: surveyTitle(survey),
 		status: survey.status,
-		shareUrl: `${url.origin}/s/${survey.slug}`
+		shareUrl: `${url.origin}/s/${survey.slug}`,
+		roster: getSurveyRoster(db, survey.id)
 	};
 };
 

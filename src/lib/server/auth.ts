@@ -3,6 +3,8 @@ import { env } from '$env/dynamic/private';
 import { signSession, SESSION_COOKIE_NAME } from './domain/session';
 import type { Cookies } from '@sveltejs/kit';
 
+const THIRTY_MIN_IN_SECONDS = 60 * 60 * 0.5;
+
 /** Guard for team-member-only routes: redirects to /login (with a return path) if not signed in. */
 export function requireTeam(locals: App.Locals, currentPath: string): string {
 	if (!locals.teamId) {
@@ -19,7 +21,7 @@ export function setSessionCookie(cookies: Cookies, teamId: string): void {
 		httpOnly: true,
 		sameSite: 'lax',
 		secure: !isDev(),
-		maxAge: 60 * 60 * 24 * 30 // TODO: Decrease this to an hour max.
+		maxAge: THIRTY_MIN_IN_SECONDS
 	});
 }
 

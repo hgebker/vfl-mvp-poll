@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
-import { getSurveyBySlug, surveyTitle } from '$lib/server/domain/surveys';
+import { getSurveyBySlug, getSurveyRoster, surveyTitle } from '$lib/server/domain/surveys';
 import { getResults, getTimeline, ResultsNotAvailableError } from '$lib/server/domain/tally';
 
 export const load: PageServerLoad = ({ params }) => {
@@ -14,7 +14,8 @@ export const load: PageServerLoad = ({ params }) => {
 		return {
 			title: surveyTitle(survey),
 			results: results.map((r) => ({ ...r, name: `${r.firstName} ${r.lastName}` })),
-			timeline
+			timeline,
+			roster: getSurveyRoster(db, survey.id)
 		};
 	} catch (err) {
 		if (err instanceof ResultsNotAvailableError) {

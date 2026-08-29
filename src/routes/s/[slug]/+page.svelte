@@ -20,15 +20,19 @@
 	}
 </script>
 
+<svelte:head>
+	<title>{data.title}</title>
+</svelte:head>
+
 <div class="page">
-	<div class="flex flex-col items-center gap-1 text-center">
-		<Badge>Matchday vote</Badge>
-		<h1 class="font-display text-3xl">{data.title}</h1>
+	<div class="flex flex-col items-center gap-2 text-center">
+		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">Matchday vote</h3>
+		<p class="text-muted-foreground">{data.title}</p>
 	</div>
 
 	{#if form?.success}
 		<Card>
-			<CardContent class="items-center gap-2 py-10 text-center">
+			<CardContent class="flex flex-col items-center gap-2 py-10 text-center">
 				<div class="bg-primary/15 text-primary rounded-full p-4">
 					<CheckIcon class="size-8" strokeWidth={3} />
 				</div>
@@ -39,14 +43,16 @@
 	{:else if data.status === 'upcoming'}
 		<Card>
 			<CardContent class="items-center py-10 text-center">
-				<p class="text-muted-foreground">Voting hasn't opened yet for this match. Check back soon.</p>
+				<p class="text-muted-foreground">
+					Voting hasn't opened yet for this match. Check back soon.
+				</p>
 			</CardContent>
 		</Card>
 	{:else if data.status === 'closed'}
 		<Card>
-			<CardContent class="items-center gap-4 py-10 text-center">
+			<CardContent class="flex flex-col items-center gap-2 py-10 text-center">
 				<p class="text-muted-foreground">Voting has closed for this match.</p>
-				<Button href={resolve('/(app)/s/[slug]/results', { slug: data.slug })} variant="secondary">
+				<Button href={resolve('/s/[slug]/results', { slug: data.slug })} variant="secondary">
 					See results
 				</Button>
 			</CardContent>
@@ -59,9 +65,7 @@
 		</Card>
 	{:else}
 		<div class="flex items-center justify-between px-1">
-			<p class="text-muted-foreground text-sm font-bold tracking-wide uppercase">
-				Tap 2 players
-			</p>
+			<p class="text-muted-foreground text-sm font-bold tracking-wide uppercase">Tap 2 players</p>
 			<div class="flex gap-1.5">
 				{#each [0, 1] as i (i)}
 					<div
@@ -86,9 +90,7 @@
 					<label
 						class={[
 							'flex items-center gap-4 rounded-2xl border-2 px-5 py-4 transition-colors',
-							isSelected
-								? 'border-primary bg-primary/10'
-								: 'border-border bg-card',
+							isSelected ? 'border-primary bg-primary/10' : 'border-border bg-card',
 							isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
 						]}
 					>
