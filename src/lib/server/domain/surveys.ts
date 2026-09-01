@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import * as schema from '../db/schema';
 import type { HomeAway } from '../db/schema';
@@ -54,6 +54,12 @@ export function getSurveyRoster(db: Db, surveyId: string) {
 		.where(eq(schema.surveyPlayers.surveyId, surveyId))
 		.orderBy(schema.players.lastName, schema.players.firstName)
 		.all();
+}
+
+export function deleteSurvey(db: Db, teamId: string, surveyId: string): void {
+	db.delete(schema.surveys)
+		.where(and(eq(schema.surveys.id, surveyId), eq(schema.surveys.teamId, teamId)))
+		.run();
 }
 
 export function listSurveysForTeam(db: Db, teamId: string) {

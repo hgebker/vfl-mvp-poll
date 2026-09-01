@@ -2,7 +2,12 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
 import { requireTeam } from '$lib/server/auth';
-import { getSurveyBySlug, getSurveyRoster, surveyTitle } from '$lib/server/domain/surveys';
+import {
+	deleteSurvey,
+	getSurveyBySlug,
+	getSurveyRoster,
+	surveyTitle
+} from '$lib/server/domain/surveys';
 import { InvalidTransitionError, transition } from '$lib/server/domain/status';
 import type { SurveyStatus } from '$lib/server/db/schema';
 
@@ -41,5 +46,16 @@ export const actions: Actions = {
 		}
 
 		throw redirect(303, url.pathname);
+	},
+
+	delete: async ({ params, locals, url }) => {
+		const teamId = requireTeam(locals, url.pathname);
+
+		const survey = getSurveyBySlug(db, params.slug);
+		if (!survey) throw error(404, 'Survey not found');
+
+		deleteSurvey(db, teamId, survey.id);
+
+		throw redirect(303, '/');
 	}
 };

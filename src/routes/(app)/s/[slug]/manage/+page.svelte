@@ -12,6 +12,17 @@
 		CardDescription
 	} from '$lib/components/ui/card/index.js';
 	import { Badge, type BadgeVariant } from '$lib/components/ui/badge/index.js';
+	import {
+		AlertDialog,
+		AlertDialogAction,
+		AlertDialogCancel,
+		AlertDialogContent,
+		AlertDialogDescription,
+		AlertDialogFooter,
+		AlertDialogHeader,
+		AlertDialogTitle,
+		AlertDialogTrigger
+	} from '$lib/components/ui/alert-dialog/index.js';
 	import SelectedPlayers from '$lib/components/selected-players.svelte';
 	import SurveyNavTabs from '$lib/components/survey-nav-tabs.svelte';
 	import CopyIcon from '@lucide/svelte/icons/copy';
@@ -114,4 +125,38 @@
 	</Card>
 
 	<SelectedPlayers players={data.roster} />
+
+	<Card class="border-destructive">
+		<CardHeader>
+			<CardTitle>Danger zone</CardTitle>
+			<CardDescription>Permanently delete this survey and all of its votes.</CardDescription>
+		</CardHeader>
+
+		<CardContent>
+			<AlertDialog>
+				<AlertDialogTrigger class="w-full">
+					{#snippet child({ props })}
+						<Button {...props} size="lg" variant="destructive" class="w-full">Delete survey</Button>
+					{/snippet}
+				</AlertDialogTrigger>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Delete this survey?</AlertDialogTitle>
+						<AlertDialogDescription>
+							This permanently deletes "{data.title}" and all votes cast for it. This action cannot
+							be undone.
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<form method="POST" action="?/delete">
+							<AlertDialogAction type="submit" variant="destructive">
+								Delete survey
+							</AlertDialogAction>
+						</form>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+		</CardContent>
+	</Card>
 </div>

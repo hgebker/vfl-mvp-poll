@@ -10,6 +10,7 @@ import * as schema from '../../db/schema';
  */
 export function createTestDb() {
 	const client = new Database(':memory:');
+	client.pragma('foreign_keys = ON');
 	const db = drizzle(client, { schema });
 	migrate(db, { migrationsFolder: 'drizzle' });
 	return db;
