@@ -41,3 +41,27 @@ export function setPlayerActive(db: Db, teamId: string, playerId: string, active
 		.where(and(eq(schema.players.id, playerId), eq(schema.players.teamId, teamId)))
 		.run();
 }
+
+export function updatePlayer(
+	db: Db,
+	teamId: string,
+	playerId: string,
+	firstName: string,
+	lastName: string,
+	jerseyNumber: number
+): void {
+	db.update(schema.players)
+		.set({
+			firstName: firstName.trim(),
+			lastName: lastName.trim(),
+			jerseyNumber
+		})
+		.where(and(eq(schema.players.id, playerId), eq(schema.players.teamId, teamId)))
+		.run();
+}
+
+export function deletePlayer(db: Db, teamId: string, playerId: string): void {
+	db.delete(schema.players)
+		.where(and(eq(schema.players.id, playerId), eq(schema.players.teamId, teamId)))
+		.run();
+}
