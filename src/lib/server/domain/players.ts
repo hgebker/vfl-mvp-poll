@@ -17,12 +17,19 @@ export function listPlayers(db: Db, teamId: string, opts: { activeOnly?: boolean
 		.all();
 }
 
-export function createPlayer(db: Db, teamId: string, firstName: string, lastName: string) {
+export function createPlayer(
+	db: Db,
+	teamId: string,
+	firstName: string,
+	lastName: string,
+	jerseyNumber: number
+) {
 	const player = {
 		id: crypto.randomUUID(),
 		teamId,
 		firstName: firstName.trim(),
-		lastName: lastName.trim()
+		lastName: lastName.trim(),
+		jerseyNumber
 	};
 	db.insert(schema.players).values(player).run();
 	return player;

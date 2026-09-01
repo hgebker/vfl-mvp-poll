@@ -6,7 +6,7 @@ import { createPlayer, listPlayers, setPlayerActive } from '$lib/server/domain/p
 
 export const load: PageServerLoad = ({ locals, url }) => {
 	const teamId = requireTeam(locals, url.pathname);
-	return { players: listPlayers(db, teamId) };
+	return { players: listPlayers(db, teamId).sort((a, b) => a.jerseyNumber - b.jerseyNumber) };
 };
 
 export const actions: Actions = {
@@ -15,12 +15,27 @@ export const actions: Actions = {
 		const form = await request.formData();
 		const firstName = String(form.get('firstName') ?? '').trim();
 		const lastName = String(form.get('lastName') ?? '').trim();
+		const jerseyNumberRaw = String(form.get('jerseyNumber') ?? '').trim();
+		const jerseyNumber = Number(jerseyNumberRaw);
 
 		if (!firstName || !lastName) {
 			return fail(400, { error: 'Enter both first and last name.' });
 		}
 
-		createPlayer(db, teamId, firstName, lastName);
+		if (
+			!jerseyNumberRaw ||
+			!Number.isInteger(jerseyNumber) ||
+			jerseyNumber < 0 ||
+			jerseyNumber > 99
+		) {
+			return fail(400, { error: 'Enter a jersey number between 0 and 99.' });
+		}
+
+		try {
+			createPlayer(db, teamId, firstName, lastName, jerseyNumber);
+		} catch {
+			return fail(400, { error: 'That jersey number is already taken.' });
+		}
 	},
 
 	toggleActive: async ({ request, locals, url }) => {

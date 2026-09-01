@@ -8,7 +8,11 @@ import type { HomeAway } from '$lib/server/db/schema';
 
 export const load: PageServerLoad = ({ locals, url }) => {
 	const teamId = requireTeam(locals, url.pathname);
-	return { players: listPlayers(db, teamId, { activeOnly: true }) };
+	return {
+		players: listPlayers(db, teamId, { activeOnly: true }).sort(
+			(a, b) => a.jerseyNumber - b.jerseyNumber
+		)
+	};
 };
 
 export const actions: Actions = {

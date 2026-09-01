@@ -6,8 +6,8 @@ describe('listPlayers', () => {
 	it('given an inactive player, when listing active-only, then they are excluded', () => {
 		const db = createTestDb();
 		const team = seedTeam(db);
-		const active = createPlayer(db, team.id, 'Active', 'Player');
-		const inactive = createPlayer(db, team.id, 'Inactive', 'Player');
+		const active = createPlayer(db, team.id, 'Active', 'Player', 1);
+		const inactive = createPlayer(db, team.id, 'Inactive', 'Player', 2);
 		setPlayerActive(db, team.id, inactive.id, false);
 
 		const players = listPlayers(db, team.id, { activeOnly: true });
@@ -18,7 +18,7 @@ describe('listPlayers', () => {
 	it('given an inactive player, when listing all players, then they are still included', () => {
 		const db = createTestDb();
 		const team = seedTeam(db);
-		const player = createPlayer(db, team.id, 'Bench', 'Warmer');
+		const player = createPlayer(db, team.id, 'Bench', 'Warmer', 3);
 		setPlayerActive(db, team.id, player.id, false);
 
 		const players = listPlayers(db, team.id);

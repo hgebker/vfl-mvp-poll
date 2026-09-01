@@ -5,12 +5,13 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
 	import { Switch } from '$lib/components/ui/switch/index.js';
-	import type { ActionData, PageData } from './$types';
+	import type { PageProps } from './$types';
 
-	let { data, form }: { data: PageData; form: ActionData } = $props();
+	let { data, form }: PageProps = $props();
 
 	let firstName = $state('');
 	let lastName = $state('');
+	let jerseyNumber = $state('');
 </script>
 
 <svelte:head>
@@ -33,6 +34,18 @@
 					<Label for="lastName">Last name</Label>
 					<Input id="lastName" name="lastName" bind:value={lastName} required />
 				</div>
+				<div class="flex flex-col gap-2">
+					<Label for="jerseyNumber">Jersey number</Label>
+					<Input
+						id="jerseyNumber"
+						name="jerseyNumber"
+						type="number"
+						min="0"
+						max="99"
+						bind:value={jerseyNumber}
+						required
+					/>
+				</div>
 				{#if form?.error}
 					<p class="text-destructive text-center font-medium">{form.error}</p>
 				{/if}
@@ -45,6 +58,7 @@
 		{#each data.players as player (player.id)}
 			<li class="bg-secondary/60 flex items-center justify-between rounded-2xl px-4 py-3">
 				<span class={['font-medium', !player.active && 'text-muted-foreground line-through']}>
+					#{player.jerseyNumber}
 					{player.firstName}
 					{player.lastName}
 				</span>

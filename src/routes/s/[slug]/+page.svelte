@@ -100,7 +100,9 @@
 							disabled={isDisabled}
 							onCheckedChange={(checked) => toggle(player.id, checked === true)}
 						/>
-						<span class="text-lg font-semibold">{player.firstName} {player.lastName}</span>
+						<span class="text-lg font-semibold"
+							>#{player.jerseyNumber} {player.firstName} {player.lastName}</span
+						>
 					</label>
 				{/each}
 			</div>

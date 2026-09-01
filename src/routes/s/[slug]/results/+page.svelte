@@ -68,6 +68,7 @@
 			id: r.playerId,
 			firstName: r.firstName,
 			lastName: r.lastName,
+			jerseyNumber: r.jerseyNumber,
 			votes: r.votes
 		}))}
 	/>

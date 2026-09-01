@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, primaryKey } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer, primaryKey, uniqueIndex } from 'drizzle-orm/sqlite-core';
 import { relations } from 'drizzle-orm';
 
 // --- teams -------------------------------------------------------------
@@ -19,20 +19,25 @@ export const teams = sqliteTable('teams', {
 // --- players -------------------------------------------------------------
 // Soft-delete via `active`: inactive players are hidden from new roster
 // pickers but preserved for historical results.
-export const players = sqliteTable('players', {
-	id: text('id')
-		.primaryKey()
-		.$defaultFn(() => crypto.randomUUID()),
-	teamId: text('team_id')
-		.notNull()
-		.references(() => teams.id, { onDelete: 'cascade' }),
-	firstName: text('first_name').notNull(),
-	lastName: text('last_name').notNull(),
-	active: integer('active', { mode: 'boolean' }).notNull().default(true),
-	createdAt: integer('created_at', { mode: 'timestamp' })
-		.notNull()
-		.$defaultFn(() => new Date())
-});
+export const players = sqliteTable(
+	'players',
+	{
+		id: text('id')
+			.primaryKey()
+			.$defaultFn(() => crypto.randomUUID()),
+		teamId: text('team_id')
+			.notNull()
+			.references(() => teams.id, { onDelete: 'cascade' }),
+		firstName: text('first_name').notNull(),
+		lastName: text('last_name').notNull(),
+		jerseyNumber: integer('jersey_number').notNull(),
+		active: integer('active', { mode: 'boolean' }).notNull().default(true),
+		createdAt: integer('created_at', { mode: 'timestamp' })
+			.notNull()
+			.$defaultFn(() => new Date())
+	},
+	(table) => [uniqueIndex('players_team_jersey_number_unique').on(table.teamId, table.jerseyNumber)]
+);
 
 // --- surveys -------------------------------------------------------------
 // `openAt`/`closeAt` are carried now for a future automatic-transition

@@ -31,6 +31,8 @@ export function seedTeam(
 	return team;
 }
 
+let nextJerseyNumber = 1;
+
 export function seedPlayer(
 	db: ReturnType<typeof createTestDb>,
 	teamId: string,
@@ -41,6 +43,7 @@ export function seedPlayer(
 		teamId,
 		firstName: 'First',
 		lastName: 'Last',
+		jerseyNumber: nextJerseyNumber++,
 		...overrides
 	};
 	db.insert(schema.players).values(player).run();

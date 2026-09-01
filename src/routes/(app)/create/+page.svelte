@@ -118,6 +118,7 @@
 							class="border-border has-[[data-state=checked]]:border-primary flex items-center gap-3 rounded-2xl border-2 px-4 py-3 font-medium"
 						>
 							<Checkbox name="rosterPlayerIds" value={player.id} />
+							#{player.jerseyNumber}
 							{player.firstName}
 							{player.lastName}
 						</Label>

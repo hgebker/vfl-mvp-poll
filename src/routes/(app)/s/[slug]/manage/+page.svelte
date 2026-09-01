@@ -62,34 +62,6 @@
 
 	<Card>
 		<CardHeader>
-			<CardTitle>Public link</CardTitle>
-			<CardDescription
-				>Share this link or QR code with your players so they can cast their vote.</CardDescription
-			>
-		</CardHeader>
-
-		<CardContent class="flex flex-col gap-4">
-			<div class="bg-secondary/60 flex items-center gap-2 rounded-2xl p-3">
-				<code class="flex-1 overflow-hidden text-sm text-ellipsis">{data.shareUrl}</code>
-				<Button variant="secondary" size="icon" onclick={copyLink} aria-label="Copy link">
-					<CopyIcon class="size-4" />
-				</Button>
-			</div>
-
-			{#if qrDataUrl}
-				<img
-					class="border-border mx-auto rounded-2xl border"
-					src={qrDataUrl}
-					alt="QR code linking to the survey"
-					width="200"
-					height="200"
-				/>
-			{/if}
-		</CardContent>
-	</Card>
-
-	<Card>
-		<CardHeader>
 			<CardTitle>Controls</CardTitle>
 			<CardDescription
 				>Open voting when you're ready, then close it once everyone has voted.</CardDescription
@@ -120,6 +92,34 @@
 						See results
 					</a>
 				</p>
+			{/if}
+		</CardContent>
+	</Card>
+
+	<Card>
+		<CardHeader>
+			<CardTitle>Public link</CardTitle>
+			<CardDescription
+				>Share this link or QR code with your players so they can cast their vote.</CardDescription
+			>
+		</CardHeader>
+
+		<CardContent class="flex flex-col gap-4">
+			<div class="bg-secondary/60 flex items-center gap-2 rounded-2xl p-3">
+				<code class="flex-1 overflow-hidden text-sm text-ellipsis">{data.shareUrl}</code>
+				<Button variant="secondary" size="icon" onclick={copyLink} aria-label="Copy link">
+					<CopyIcon class="size-4" />
+				</Button>
+			</div>
+
+			{#if qrDataUrl}
+				<img
+					class="border-border mx-auto rounded-2xl border"
+					src={qrDataUrl}
+					alt="QR code linking to the survey"
+					width="200"
+					height="200"
+				/>
 			{/if}
 		</CardContent>
 	</Card>

@@ -10,6 +10,7 @@ export interface PlayerTally {
 	playerId: string;
 	firstName: string;
 	lastName: string;
+	jerseyNumber: number;
 	votes: number;
 }
 
@@ -22,6 +23,7 @@ export function getResults(db: Db, surveyId: string): PlayerTally[] {
 			playerId: schema.players.id,
 			firstName: schema.players.firstName,
 			lastName: schema.players.lastName,
+			jerseyNumber: schema.players.jerseyNumber,
 			votes: sql<number>`count(${schema.votes.id})`.mapWith(Number)
 		})
 		.from(schema.surveyPlayers)

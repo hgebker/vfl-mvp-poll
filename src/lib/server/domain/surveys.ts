@@ -47,7 +47,8 @@ export function getSurveyRoster(db: Db, surveyId: string) {
 		.select({
 			id: schema.players.id,
 			firstName: schema.players.firstName,
-			lastName: schema.players.lastName
+			lastName: schema.players.lastName,
+			jerseyNumber: schema.players.jerseyNumber
 		})
 		.from(schema.surveyPlayers)
 		.innerJoin(schema.players, eq(schema.players.id, schema.surveyPlayers.playerId))
