@@ -4,6 +4,8 @@
 	import { Card, CardContent } from '$lib/components/ui/card/index.js';
 	import { Checkbox } from '$lib/components/ui/checkbox/index.js';
 	import CheckIcon from '@lucide/svelte/icons/check';
+	import ClockIcon from '@lucide/svelte/icons/clock';
+	import LockIcon from '@lucide/svelte/icons/lock';
 	import type { ActionData, PageData } from './$types';
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
@@ -41,16 +43,22 @@
 		</Card>
 	{:else if data.status === 'upcoming'}
 		<Card>
-			<CardContent class="items-center py-10 text-center">
-				<p class="text-muted-foreground">
-					Voting hasn't opened yet for this match. Check back soon.
-				</p>
+			<CardContent class="flex flex-col items-center gap-2 py-10 text-center">
+				<div class="bg-muted text-muted-foreground rounded-full p-4">
+					<ClockIcon class="size-8" strokeWidth={2} />
+				</div>
+				<p class="text-lg font-semibold">Voting hasn't opened yet</p>
+				<p class="text-muted-foreground">Check back soon.</p>
 			</CardContent>
 		</Card>
 	{:else if data.status === 'closed'}
 		<Card>
 			<CardContent class="flex flex-col items-center gap-2 py-10 text-center">
-				<p class="text-muted-foreground">Voting has closed for this match.</p>
+				<div class="bg-muted text-muted-foreground rounded-full p-4">
+					<LockIcon class="size-8" strokeWidth={2} />
+				</div>
+				<p class="text-lg font-semibold">Voting has closed</p>
+				<p class="text-muted-foreground">Check out the results instead.</p>
 				<Button href={resolve('/s/[slug]/results', { slug: data.slug })} variant="secondary">
 					See results
 				</Button>
@@ -58,8 +66,12 @@
 		</Card>
 	{:else if data.alreadyVoted}
 		<Card>
-			<CardContent class="items-center py-10 text-center">
-				<p class="text-muted-foreground">You've already voted in this survey. Thanks!</p>
+			<CardContent class="flex flex-col items-center gap-2 py-10 text-center">
+				<div class="bg-muted text-muted-foreground rounded-full p-4">
+					<CheckIcon class="size-8" strokeWidth={2} />
+				</div>
+				<p class="text-lg font-semibold">You've already voted</p>
+				<p class="text-muted-foreground">Thanks for voting!</p>
 			</CardContent>
 		</Card>
 	{:else}
