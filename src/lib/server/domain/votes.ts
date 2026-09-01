@@ -7,20 +7,20 @@ type Db = BetterSQLite3Database<typeof schema>;
 export class VoteRejectedError extends Error {}
 
 /**
- * Casts a ballot: exactly two distinct picks from the survey's roster.
+ * Casts a ballot: exactly two distinct picks from the poll's roster.
  *
  * Anonymity guarantee: this inserts a `voteReceipts` row (proves "token
  * voted") and two `votes` rows (the picks) in one transaction, but the
  * receipt never stores which players were picked and the votes never store
  * the token — the two tables can't be joined to deanonymize a ballot.
  *
- * One-shot/immutable: a token that already has a receipt for this survey
+ * One-shot/immutable: a token that already has a receipt for this poll
  * is rejected outright, there is no update path.
  */
-export function castVote(db: Db, surveyId: string, token: string, playerIds: string[]): void {
-	const survey = db.select().from(schema.surveys).where(eq(schema.surveys.id, surveyId)).get();
-	if (!survey) throw new VoteRejectedError('Survey not found');
-	if (survey.status !== 'open') throw new VoteRejectedError('Survey is not open for voting');
+export function castVote(db: Db, pollId: string, token: string, playerIds: string[]): void {
+	const poll = db.select().from(schema.polls).where(eq(schema.polls.id, pollId)).get();
+	if (!poll) throw new VoteRejectedError('Poll not found');
+	if (poll.status !== 'open') throw new VoteRejectedError('Poll is not open for voting');
 
 	const distinctPicks = new Set(playerIds);
 	if (distinctPicks.size !== 2) {
@@ -28,32 +28,32 @@ export function castVote(db: Db, surveyId: string, token: string, playerIds: str
 	}
 
 	const roster = db
-		.select({ playerId: schema.surveyPlayers.playerId })
-		.from(schema.surveyPlayers)
+		.select({ playerId: schema.pollPlayers.playerId })
+		.from(schema.pollPlayers)
 		.where(
 			and(
-				eq(schema.surveyPlayers.surveyId, surveyId),
-				inArray(schema.surveyPlayers.playerId, [...distinctPicks])
+				eq(schema.pollPlayers.pollId, pollId),
+				inArray(schema.pollPlayers.playerId, [...distinctPicks])
 			)
 		)
 		.all();
 	if (roster.length !== 2) {
-		throw new VoteRejectedError('Both picks must be on the survey roster');
+		throw new VoteRejectedError('Both picks must be on the poll roster');
 	}
 
 	const existingReceipt = db
 		.select()
 		.from(schema.voteReceipts)
-		.where(and(eq(schema.voteReceipts.surveyId, surveyId), eq(schema.voteReceipts.token, token)))
+		.where(and(eq(schema.voteReceipts.pollId, pollId), eq(schema.voteReceipts.token, token)))
 		.get();
 	if (existingReceipt) {
-		throw new VoteRejectedError('This browser has already voted in this survey');
+		throw new VoteRejectedError('This browser has already voted in this poll');
 	}
 
 	db.transaction((tx) => {
-		tx.insert(schema.voteReceipts).values({ surveyId, token }).run();
+		tx.insert(schema.voteReceipts).values({ pollId, token }).run();
 		tx.insert(schema.votes)
-			.values([...distinctPicks].map((playerId) => ({ surveyId, playerId })))
+			.values([...distinctPicks].map((playerId) => ({ pollId, playerId })))
 			.run();
 	});
 }

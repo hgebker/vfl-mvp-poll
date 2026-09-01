@@ -50,12 +50,12 @@ export function seedPlayer(
 	return player;
 }
 
-export function seedSurvey(
+export function seedPoll(
 	db: ReturnType<typeof createTestDb>,
 	teamId: string,
-	overrides: Partial<typeof schema.surveys.$inferInsert> = {}
+	overrides: Partial<typeof schema.polls.$inferInsert> = {}
 ) {
-	const survey = {
+	const poll = {
 		id: crypto.randomUUID(),
 		teamId,
 		slug: crypto.randomUUID(),
@@ -65,14 +65,10 @@ export function seedSurvey(
 		status: 'upcoming' as const,
 		...overrides
 	};
-	db.insert(schema.surveys).values(survey).run();
-	return survey;
+	db.insert(schema.polls).values(poll).run();
+	return poll;
 }
 
-export function addToRoster(
-	db: ReturnType<typeof createTestDb>,
-	surveyId: string,
-	playerId: string
-) {
-	db.insert(schema.surveyPlayers).values({ surveyId, playerId }).run();
+export function addToRoster(db: ReturnType<typeof createTestDb>, pollId: string, playerId: string) {
+	db.insert(schema.pollPlayers).values({ pollId, playerId }).run();
 }

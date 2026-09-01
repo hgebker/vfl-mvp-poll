@@ -131,6 +131,6 @@
 			<p class="text-destructive text-center font-medium">{form.error}</p>
 		{/if}
 
-		<Button type="submit" size="lg">Create survey</Button>
+		<Button type="submit" size="lg">Create poll</Button>
 	</form>
 </div>

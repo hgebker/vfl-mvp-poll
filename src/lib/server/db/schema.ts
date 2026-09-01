@@ -39,16 +39,16 @@ export const players = sqliteTable(
 	(table) => [uniqueIndex('players_team_jersey_number_unique').on(table.teamId, table.jerseyNumber)]
 );
 
-// --- surveys -------------------------------------------------------------
+// --- polls -------------------------------------------------------------
 // `openAt`/`closeAt` are carried now for a future automatic-transition
 // scheduler, but are unused by v1's manual-only status transitions.
-export const surveyStatus = ['upcoming', 'open', 'closed'] as const;
-export type SurveyStatus = (typeof surveyStatus)[number];
+export const pollStatus = ['upcoming', 'open', 'closed'] as const;
+export type PollStatus = (typeof pollStatus)[number];
 
 export const homeAway = ['home', 'away'] as const;
 export type HomeAway = (typeof homeAway)[number];
 
-export const surveys = sqliteTable('surveys', {
+export const polls = sqliteTable('polls', {
 	id: text('id')
 		.primaryKey()
 		.$defaultFn(() => crypto.randomUUID()),
@@ -59,7 +59,7 @@ export const surveys = sqliteTable('surveys', {
 	opponent: text('opponent').notNull(),
 	matchDate: integer('match_date', { mode: 'timestamp' }).notNull(),
 	homeAway: text('home_away', { enum: homeAway }).notNull(),
-	status: text('status', { enum: surveyStatus }).notNull().default('upcoming'),
+	status: text('status', { enum: pollStatus }).notNull().default('upcoming'),
 	opensAt: integer('opens_at', { mode: 'timestamp' }),
 	closesAt: integer('closes_at', { mode: 'timestamp' }),
 	createdAt: integer('created_at', { mode: 'timestamp' })
@@ -67,18 +67,18 @@ export const surveys = sqliteTable('surveys', {
 		.$defaultFn(() => new Date())
 });
 
-// --- survey_players (roster subset) --------------------------------------
-export const surveyPlayers = sqliteTable(
-	'survey_players',
+// --- poll_players (roster subset) --------------------------------------
+export const pollPlayers = sqliteTable(
+	'poll_players',
 	{
-		surveyId: text('survey_id')
+		pollId: text('poll_id')
 			.notNull()
-			.references(() => surveys.id, { onDelete: 'cascade' }),
+			.references(() => polls.id, { onDelete: 'cascade' }),
 		playerId: text('player_id')
 			.notNull()
 			.references(() => players.id, { onDelete: 'cascade' })
 	},
-	(table) => [primaryKey({ columns: [table.surveyId, table.playerId] })]
+	(table) => [primaryKey({ columns: [table.pollId, table.playerId] })]
 );
 
 // --- votes -----------------------------------------------------------------
@@ -88,9 +88,9 @@ export const votes = sqliteTable('votes', {
 	id: text('id')
 		.primaryKey()
 		.$defaultFn(() => crypto.randomUUID()),
-	surveyId: text('survey_id')
+	pollId: text('poll_id')
 		.notNull()
-		.references(() => surveys.id, { onDelete: 'cascade' }),
+		.references(() => polls.id, { onDelete: 'cascade' }),
 	playerId: text('player_id')
 		.notNull()
 		.references(() => players.id, { onDelete: 'cascade' }),
@@ -100,51 +100,51 @@ export const votes = sqliteTable('votes', {
 });
 
 // --- vote_receipts (dedupe only) --------------------------------------------
-// Proves "this token already voted in this survey" WITHOUT recording which
+// Proves "this token already voted in this poll" WITHOUT recording which
 // players it picked, so it can never be joined back to a vote/voter.
 export const voteReceipts = sqliteTable(
 	'vote_receipts',
 	{
-		surveyId: text('survey_id')
+		pollId: text('poll_id')
 			.notNull()
-			.references(() => surveys.id, { onDelete: 'cascade' }),
+			.references(() => polls.id, { onDelete: 'cascade' }),
 		token: text('token').notNull(),
 		createdAt: integer('created_at', { mode: 'timestamp' })
 			.notNull()
 			.$defaultFn(() => new Date())
 	},
-	(table) => [primaryKey({ columns: [table.surveyId, table.token] })]
+	(table) => [primaryKey({ columns: [table.pollId, table.token] })]
 );
 
 // --- relations (for query ergonomics) --------------------------------------
 export const teamsRelations = relations(teams, ({ many }) => ({
 	players: many(players),
-	surveys: many(surveys)
+	polls: many(polls)
 }));
 
 export const playersRelations = relations(players, ({ one, many }) => ({
 	team: one(teams, { fields: [players.teamId], references: [teams.id] }),
-	surveyPlayers: many(surveyPlayers),
+	pollPlayers: many(pollPlayers),
 	votes: many(votes)
 }));
 
-export const surveysRelations = relations(surveys, ({ one, many }) => ({
-	team: one(teams, { fields: [surveys.teamId], references: [teams.id] }),
-	surveyPlayers: many(surveyPlayers),
+export const pollsRelations = relations(polls, ({ one, many }) => ({
+	team: one(teams, { fields: [polls.teamId], references: [teams.id] }),
+	pollPlayers: many(pollPlayers),
 	votes: many(votes),
 	voteReceipts: many(voteReceipts)
 }));
 
-export const surveyPlayersRelations = relations(surveyPlayers, ({ one }) => ({
-	survey: one(surveys, { fields: [surveyPlayers.surveyId], references: [surveys.id] }),
-	player: one(players, { fields: [surveyPlayers.playerId], references: [players.id] })
+export const pollPlayersRelations = relations(pollPlayers, ({ one }) => ({
+	poll: one(polls, { fields: [pollPlayers.pollId], references: [polls.id] }),
+	player: one(players, { fields: [pollPlayers.playerId], references: [players.id] })
 }));
 
 export const votesRelations = relations(votes, ({ one }) => ({
-	survey: one(surveys, { fields: [votes.surveyId], references: [surveys.id] }),
+	poll: one(polls, { fields: [votes.pollId], references: [polls.id] }),
 	player: one(players, { fields: [votes.playerId], references: [players.id] })
 }));
 
 export const voteReceiptsRelations = relations(voteReceipts, ({ one }) => ({
-	survey: one(surveys, { fields: [voteReceipts.surveyId], references: [surveys.id] })
+	poll: one(polls, { fields: [voteReceipts.pollId], references: [polls.id] })
 }));

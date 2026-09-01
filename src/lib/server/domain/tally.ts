@@ -15,8 +15,8 @@ export interface PlayerTally {
 }
 
 /** Per-player vote counts, descending. Guarded: only readable once closed. */
-export function getResults(db: Db, surveyId: string): PlayerTally[] {
-	assertClosed(db, surveyId);
+export function getResults(db: Db, pollId: string): PlayerTally[] {
+	assertClosed(db, pollId);
 
 	return db
 		.select({
@@ -26,16 +26,13 @@ export function getResults(db: Db, surveyId: string): PlayerTally[] {
 			jerseyNumber: schema.players.jerseyNumber,
 			votes: sql<number>`count(${schema.votes.id})`.mapWith(Number)
 		})
-		.from(schema.surveyPlayers)
-		.innerJoin(schema.players, eq(schema.players.id, schema.surveyPlayers.playerId))
+		.from(schema.pollPlayers)
+		.innerJoin(schema.players, eq(schema.players.id, schema.pollPlayers.playerId))
 		.leftJoin(
 			schema.votes,
-			and(
-				eq(schema.votes.playerId, schema.surveyPlayers.playerId),
-				eq(schema.votes.surveyId, surveyId)
-			)
+			and(eq(schema.votes.playerId, schema.pollPlayers.playerId), eq(schema.votes.pollId, pollId))
 		)
-		.where(eq(schema.surveyPlayers.surveyId, surveyId))
+		.where(eq(schema.pollPlayers.pollId, pollId))
 		.groupBy(schema.players.id)
 		.orderBy(
 			desc(sql`count(${schema.votes.id})`),
@@ -51,8 +48,8 @@ export interface TimelineBucket {
 }
 
 /** Vote-arrival timeline (per-minute buckets), for the activity chart. */
-export function getTimeline(db: Db, surveyId: string): TimelineBucket[] {
-	assertClosed(db, surveyId);
+export function getTimeline(db: Db, pollId: string): TimelineBucket[] {
+	assertClosed(db, pollId);
 
 	return db
 		.select({
@@ -60,16 +57,16 @@ export function getTimeline(db: Db, surveyId: string): TimelineBucket[] {
 			votes: sql<number>`count(*)`.mapWith(Number)
 		})
 		.from(schema.votes)
-		.where(eq(schema.votes.surveyId, surveyId))
+		.where(eq(schema.votes.pollId, pollId))
 		.groupBy(sql`1`)
 		.orderBy(sql`1`)
 		.all();
 }
 
-function assertClosed(db: Db, surveyId: string): void {
-	const survey = db.select().from(schema.surveys).where(eq(schema.surveys.id, surveyId)).get();
-	if (!survey) throw new ResultsNotAvailableError('Survey not found');
-	if (survey.status !== 'closed') {
-		throw new ResultsNotAvailableError('Results are hidden until the survey is closed');
+function assertClosed(db: Db, pollId: string): void {
+	const poll = db.select().from(schema.polls).where(eq(schema.polls.id, pollId)).get();
+	if (!poll) throw new ResultsNotAvailableError('Poll not found');
+	if (poll.status !== 'closed') {
+		throw new ResultsNotAvailableError('Results are hidden until the poll is closed');
 	}
 }

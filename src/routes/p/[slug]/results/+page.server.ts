@@ -1,21 +1,21 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
-import { getSurveyBySlug, getSurveyRoster, surveyTitle } from '$lib/server/domain/surveys';
+import { getPollBySlug, getPollRoster, pollTitle } from '$lib/server/domain/polls';
 import { getResults, getTimeline, ResultsNotAvailableError } from '$lib/server/domain/tally';
 
 export const load: PageServerLoad = ({ params }) => {
-	const survey = getSurveyBySlug(db, params.slug);
-	if (!survey) throw error(404, 'Survey not found');
+	const poll = getPollBySlug(db, params.slug);
+	if (!poll) throw error(404, 'Poll not found');
 
 	try {
-		const results = getResults(db, survey.id);
-		const timeline = getTimeline(db, survey.id);
+		const results = getResults(db, poll.id);
+		const timeline = getTimeline(db, poll.id);
 		return {
-			title: surveyTitle(survey),
+			title: pollTitle(poll),
 			results: results.map((r) => ({ ...r, name: `${r.firstName} ${r.lastName}` })),
 			timeline,
-			roster: getSurveyRoster(db, survey.id)
+			roster: getPollRoster(db, poll.id)
 		};
 	} catch (err) {
 		if (err instanceof ResultsNotAvailableError) {

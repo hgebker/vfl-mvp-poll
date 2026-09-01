@@ -38,7 +38,7 @@
 					<CheckIcon class="size-8" strokeWidth={3} />
 				</div>
 				<p class="text-lg font-semibold">Thanks for voting!</p>
-				<p class="text-muted-foreground">Results will be shown once the survey is closed.</p>
+				<p class="text-muted-foreground">Results will be shown once the poll is closed.</p>
 			</CardContent>
 		</Card>
 	{:else if data.status === 'upcoming'}
@@ -59,7 +59,7 @@
 				</div>
 				<p class="text-lg font-semibold">Voting has closed</p>
 				<p class="text-muted-foreground">Check out the results instead.</p>
-				<Button href={resolve('/s/[slug]/results', { slug: data.slug })} variant="secondary">
+				<Button href={resolve('/p/[slug]/results', { slug: data.slug })} variant="secondary">
 					See results
 				</Button>
 			</CardContent>

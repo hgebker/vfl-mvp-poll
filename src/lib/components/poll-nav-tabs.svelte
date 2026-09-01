@@ -4,14 +4,14 @@
 	import { cn } from '$lib/utils.js';
 
 	const slug = $derived(page.params.slug!);
-	const isManage = $derived(page.route.id === '/(app)/s/[slug]/manage');
-	const isResults = $derived(page.route.id === '/s/[slug]/results');
+	const isManage = $derived(page.route.id === '/(app)/p/[slug]/manage');
+	const isResults = $derived(page.route.id === '/p/[slug]/results');
 </script>
 
 {#if page.data.teamId}
 	<div class="bg-secondary/60 mx-auto flex w-full gap-1 rounded-full p-1">
 		<a
-			href={resolve('/(app)/s/[slug]/manage', { slug })}
+			href={resolve('/(app)/p/[slug]/manage', { slug })}
 			class={cn(
 				'flex-1 rounded-full px-4 py-1.5 text-center text-sm font-medium transition-colors',
 				isManage ? 'bg-background shadow-sm' : 'text-muted-foreground hover:text-foreground'
@@ -20,7 +20,7 @@
 			Manage
 		</a>
 		<a
-			href={resolve('/s/[slug]/results', { slug })}
+			href={resolve('/p/[slug]/results', { slug })}
 			class={cn(
 				'flex-1 rounded-full px-4 py-1.5 text-center text-sm font-medium transition-colors',
 				isResults ? 'bg-background shadow-sm' : 'text-muted-foreground hover:text-foreground'

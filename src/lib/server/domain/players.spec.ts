@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { eq } from 'drizzle-orm';
 import * as schema from '../db/schema';
 import { createPlayer, deletePlayer, listPlayers, setPlayerActive, updatePlayer } from './players';
-import { addToRoster, createTestDb, seedPlayer, seedSurvey, seedTeam } from './__test__/test-db';
+import { addToRoster, createTestDb, seedPlayer, seedPoll, seedTeam } from './__test__/test-db';
 
 describe('listPlayers', () => {
 	it('given an inactive player, when listing active-only, then they are excluded', () => {
@@ -47,9 +47,7 @@ describe('updatePlayer', () => {
 		const taken = seedPlayer(db, team.id, { jerseyNumber: 7 });
 		const player = seedPlayer(db, team.id, { jerseyNumber: 8 });
 
-		expect(() =>
-			updatePlayer(db, team.id, player.id, 'New', 'Name', taken.jerseyNumber)
-		).toThrow();
+		expect(() => updatePlayer(db, team.id, player.id, 'New', 'Name', taken.jerseyNumber)).toThrow();
 	});
 
 	it('given a player belonging to another team, when updating with the wrong teamId, then the player is not changed', () => {
@@ -77,22 +75,22 @@ describe('deletePlayer', () => {
 		expect(found).toBeUndefined();
 	});
 
-	it('given a player on a survey roster with votes, when deleted, then the roster entry and votes are also removed', () => {
+	it('given a player on a poll roster with votes, when deleted, then the roster entry and votes are also removed', () => {
 		const db = createTestDb();
 		const team = seedTeam(db);
 		const player = seedPlayer(db, team.id);
-		const survey = seedSurvey(db, team.id);
-		addToRoster(db, survey.id, player.id);
+		const poll = seedPoll(db, team.id);
+		addToRoster(db, poll.id, player.id);
 		db.insert(schema.votes)
-			.values({ id: crypto.randomUUID(), surveyId: survey.id, playerId: player.id })
+			.values({ id: crypto.randomUUID(), pollId: poll.id, playerId: player.id })
 			.run();
 
 		deletePlayer(db, team.id, player.id);
 
 		const roster = db
 			.select()
-			.from(schema.surveyPlayers)
-			.where(eq(schema.surveyPlayers.playerId, player.id))
+			.from(schema.pollPlayers)
+			.where(eq(schema.pollPlayers.playerId, player.id))
 			.all();
 		const votes = db.select().from(schema.votes).where(eq(schema.votes.playerId, player.id)).all();
 		expect(roster).toEqual([]);

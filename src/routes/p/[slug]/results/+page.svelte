@@ -3,7 +3,7 @@
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card/index.js';
 	import { ChartContainer, type ChartConfig } from '$lib/components/ui/chart/index.js';
 	import SelectedPlayers from '$lib/components/selected-players.svelte';
-	import SurveyNavTabs from '$lib/components/survey-nav-tabs.svelte';
+	import PollNavTabs from '$lib/components/poll-nav-tabs.svelte';
 	import type { PageData } from './$types';
 
 	const chartConfig = {
@@ -21,7 +21,7 @@
 </svelte:head>
 
 <div class="page">
-	<SurveyNavTabs />
+	<PollNavTabs />
 
 	<div class="flex flex-col items-center gap-2 text-center">
 		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{data.title}</h3>

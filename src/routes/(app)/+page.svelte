@@ -9,7 +9,7 @@
 		{
 			href: resolve('/(app)/create'),
 			icon: PlusIcon,
-			title: 'Create a survey',
+			title: 'Create a poll',
 			description: 'Set up a new MVP vote for your players.'
 		},
 		{

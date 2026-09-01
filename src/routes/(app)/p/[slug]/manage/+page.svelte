@@ -24,7 +24,7 @@
 		AlertDialogTrigger
 	} from '$lib/components/ui/alert-dialog/index.js';
 	import SelectedPlayers from '$lib/components/selected-players.svelte';
-	import SurveyNavTabs from '$lib/components/survey-nav-tabs.svelte';
+	import PollNavTabs from '$lib/components/poll-nav-tabs.svelte';
 	import CopyIcon from '@lucide/svelte/icons/copy';
 	import type { ActionData, PageData } from './$types';
 
@@ -53,7 +53,7 @@
 </svelte:head>
 
 <div class="page">
-	<SurveyNavTabs />
+	<PollNavTabs />
 
 	<div class="flex flex-col items-center gap-2 text-center">
 		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{data.title}</h3>
@@ -86,7 +86,7 @@
 				<p class="text-muted-foreground text-center">
 					Voting is closed.
 					<a
-						href={resolve('/s/[slug]/results', { slug: data.slug })}
+						href={resolve('/p/[slug]/results', { slug: data.slug })}
 						class="text-primary underline"
 					>
 						See results
@@ -116,7 +116,7 @@
 				<img
 					class="border-border mx-auto rounded-2xl border"
 					src={qrDataUrl}
-					alt="QR code linking to the survey"
+					alt="QR code linking to the poll"
 					width="200"
 					height="200"
 				/>
@@ -129,19 +129,19 @@
 	<Card class="border-destructive">
 		<CardHeader>
 			<CardTitle>Danger zone</CardTitle>
-			<CardDescription>Permanently delete this survey and all of its votes.</CardDescription>
+			<CardDescription>Permanently delete this poll and all of its votes.</CardDescription>
 		</CardHeader>
 
 		<CardContent>
 			<AlertDialog>
 				<AlertDialogTrigger class="w-full">
 					{#snippet child({ props })}
-						<Button {...props} size="lg" variant="destructive" class="w-full">Delete survey</Button>
+						<Button {...props} size="lg" variant="destructive" class="w-full">Delete poll</Button>
 					{/snippet}
 				</AlertDialogTrigger>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Delete this survey?</AlertDialogTitle>
+						<AlertDialogTitle>Delete this poll?</AlertDialogTitle>
 						<AlertDialogDescription>
 							This permanently deletes "{data.title}" and all votes cast for it. This action cannot
 							be undone.
@@ -150,9 +150,7 @@
 					<AlertDialogFooter>
 						<AlertDialogCancel>Cancel</AlertDialogCancel>
 						<form method="POST" action="?/delete">
-							<AlertDialogAction type="submit" variant="destructive">
-								Delete survey
-							</AlertDialogAction>
+							<AlertDialogAction type="submit" variant="destructive">Delete poll</AlertDialogAction>
 						</form>
 					</AlertDialogFooter>
 				</AlertDialogContent>

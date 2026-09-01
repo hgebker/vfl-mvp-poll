@@ -3,7 +3,7 @@
 	import { resolve } from '$app/paths';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Card, CardContent } from '$lib/components/ui/card/index.js';
-	import SurveyNavTabs from '$lib/components/survey-nav-tabs.svelte';
+	import PollNavTabs from '$lib/components/poll-nav-tabs.svelte';
 	import LockIcon from '@lucide/svelte/icons/lock';
 	import CircleAlertIcon from '@lucide/svelte/icons/circle-alert';
 
@@ -12,7 +12,7 @@
 </script>
 
 <div class="page">
-	<SurveyNavTabs />
+	<PollNavTabs />
 
 	<Card>
 		<CardContent class="flex flex-col items-center gap-2 py-10 text-center">
@@ -27,7 +27,7 @@
 				{isHidden ? "Results aren't available yet" : 'Something went wrong'}
 			</p>
 			<p class="text-muted-foreground">{page.error?.message}</p>
-			<Button href={resolve('/s/[slug]', { slug })} variant="secondary">Back to vote</Button>
+			<Button href={resolve('/p/[slug]', { slug })} variant="secondary">Back to vote</Button>
 		</CardContent>
 	</Card>
 </div>

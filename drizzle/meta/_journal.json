@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1787846442854,
-      "tag": "0000_lively_bastion",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1788269623665,
-      "tag": "0001_lucky_toro",
+      "when": 1788275378202,
+      "tag": "0000_burly_mystique",
       "breakpoints": true
     }
   ]

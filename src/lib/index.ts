@@ -9,10 +9,10 @@ export const ROUTES: Record<RouteId, string> = {
 	'/(app)': '',
 	'/(app)/admin': '',
 	'/(app)/admin/players': 'Players',
-	'/(app)/s': '',
-	'/(app)/s/[slug]': '',
-	'/s': '',
-	'/s/[slug]': 'Vote',
-	'/s/[slug]/results': 'Results',
-	'/(app)/s/[slug]/manage': 'Manage'
+	'/(app)/p': '',
+	'/(app)/p/[slug]': '',
+	'/p': '',
+	'/p/[slug]': 'Vote',
+	'/p/[slug]/results': 'Results',
+	'/(app)/p/[slug]/manage': 'Manage'
 };

@@ -6,14 +6,14 @@
 	import { page } from '$app/state';
 	import { ROUTES } from '$lib';
 
-	type SurveyLink = { slug: string; title: string; status: string };
+	type PollLink = { slug: string; title: string; status: string };
 
-	let { surveys = [], children }: { surveys?: SurveyLink[]; children: import('svelte').Snippet } =
+	let { polls = [], children }: { polls?: PollLink[]; children: import('svelte').Snippet } =
 		$props();
 </script>
 
 <Sidebar.Provider>
-	<AppSidebar {surveys} />
+	<AppSidebar {polls} />
 
 	<Sidebar.Inset>
 		<header class="flex h-14 shrink-0 items-center gap-2">

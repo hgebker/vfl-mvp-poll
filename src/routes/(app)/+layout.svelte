@@ -6,7 +6,7 @@
 </script>
 
 {#if data.teamId}
-	<AppShell surveys={data.surveys}>
+	<AppShell polls={data.polls}>
 		{@render children()}
 	</AppShell>
 {:else}

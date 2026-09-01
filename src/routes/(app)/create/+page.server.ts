@@ -3,7 +3,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
 import { requireTeam } from '$lib/server/auth';
 import { listPlayers } from '$lib/server/domain/players';
-import { createSurvey } from '$lib/server/domain/surveys';
+import { createPoll } from '$lib/server/domain/polls';
 import type { HomeAway } from '$lib/server/db/schema';
 
 export const load: PageServerLoad = ({ locals, url }) => {
@@ -34,13 +34,13 @@ export const actions: Actions = {
 			return fail(400, { error: 'Pick at least two players for the roster.' });
 		}
 
-		const survey = createSurvey(db, teamId, {
+		const poll = createPoll(db, teamId, {
 			opponent,
 			matchDate: new Date(matchDate),
 			homeAway,
 			rosterPlayerIds
 		});
 
-		throw redirect(303, `/s/${survey.slug}/manage`);
+		throw redirect(303, `/p/${poll.slug}/manage`);
 	}
 };

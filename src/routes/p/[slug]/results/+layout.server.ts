@@ -1,12 +1,11 @@
 import type { LayoutServerLoad } from './$types';
 import { db } from '$lib/server/db';
 import { listPollsForTeam, pollTitle } from '$lib/server/domain/polls';
-import { redirect } from '@sveltejs/kit';
 
-export const load: LayoutServerLoad = ({ locals, request }) => {
+export const load: LayoutServerLoad = ({ locals }) => {
 	const teamId = locals.teamId;
 	if (!teamId) {
-		redirect(308, `/login?redirectTo=${request.url}`);
+		return { teamId: null, polls: [] };
 	}
 
 	const polls = listPollsForTeam(db, teamId).map((poll) => ({

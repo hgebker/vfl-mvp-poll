@@ -3,20 +3,22 @@ CREATE TABLE `players` (
 	`team_id` text NOT NULL,
 	`first_name` text NOT NULL,
 	`last_name` text NOT NULL,
+	`jersey_number` integer NOT NULL,
 	`active` integer DEFAULT true NOT NULL,
 	`created_at` integer NOT NULL,
 	FOREIGN KEY (`team_id`) REFERENCES `teams`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
-CREATE TABLE `survey_players` (
-	`survey_id` text NOT NULL,
+CREATE UNIQUE INDEX `players_team_jersey_number_unique` ON `players` (`team_id`,`jersey_number`);--> statement-breakpoint
+CREATE TABLE `poll_players` (
+	`poll_id` text NOT NULL,
 	`player_id` text NOT NULL,
-	PRIMARY KEY(`survey_id`, `player_id`),
-	FOREIGN KEY (`survey_id`) REFERENCES `surveys`(`id`) ON UPDATE no action ON DELETE cascade,
+	PRIMARY KEY(`poll_id`, `player_id`),
+	FOREIGN KEY (`poll_id`) REFERENCES `polls`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`player_id`) REFERENCES `players`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
-CREATE TABLE `surveys` (
+CREATE TABLE `polls` (
 	`id` text PRIMARY KEY NOT NULL,
 	`team_id` text NOT NULL,
 	`slug` text NOT NULL,
@@ -30,7 +32,7 @@ CREATE TABLE `surveys` (
 	FOREIGN KEY (`team_id`) REFERENCES `teams`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `surveys_slug_unique` ON `surveys` (`slug`);--> statement-breakpoint
+CREATE UNIQUE INDEX `polls_slug_unique` ON `polls` (`slug`);--> statement-breakpoint
 CREATE TABLE `teams` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
@@ -41,18 +43,18 @@ CREATE TABLE `teams` (
 --> statement-breakpoint
 CREATE UNIQUE INDEX `teams_slug_unique` ON `teams` (`slug`);--> statement-breakpoint
 CREATE TABLE `vote_receipts` (
-	`survey_id` text NOT NULL,
+	`poll_id` text NOT NULL,
 	`token` text NOT NULL,
 	`created_at` integer NOT NULL,
-	PRIMARY KEY(`survey_id`, `token`),
-	FOREIGN KEY (`survey_id`) REFERENCES `surveys`(`id`) ON UPDATE no action ON DELETE cascade
+	PRIMARY KEY(`poll_id`, `token`),
+	FOREIGN KEY (`poll_id`) REFERENCES `polls`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `votes` (
 	`id` text PRIMARY KEY NOT NULL,
-	`survey_id` text NOT NULL,
+	`poll_id` text NOT NULL,
 	`player_id` text NOT NULL,
 	`created_at` integer NOT NULL,
-	FOREIGN KEY (`survey_id`) REFERENCES `surveys`(`id`) ON UPDATE no action ON DELETE cascade,
+	FOREIGN KEY (`poll_id`) REFERENCES `polls`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`player_id`) REFERENCES `players`(`id`) ON UPDATE no action ON DELETE cascade
 );

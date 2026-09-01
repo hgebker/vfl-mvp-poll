@@ -120,8 +120,9 @@
 							<AlertDialogHeader>
 								<AlertDialogTitle>Delete this player?</AlertDialogTitle>
 								<AlertDialogDescription>
-									This permanently deletes {player.firstName} {player.lastName} and removes them
-									from any survey rosters and votes. This action cannot be undone.
+									This permanently deletes {player.firstName}
+									{player.lastName} and removes them from any poll rosters and votes. This action cannot
+									be undone.
 								</AlertDialogDescription>
 							</AlertDialogHeader>
 							<AlertDialogFooter>

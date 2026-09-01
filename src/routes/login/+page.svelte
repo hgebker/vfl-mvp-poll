@@ -12,7 +12,7 @@
 <div class="page justify-center">
 	<div class="flex flex-col items-center gap-1 text-center">
 		<h1 class="font-display text-3xl">Team sign-in</h1>
-		<p class="text-muted-foreground">Enter the team passcode to create or manage a match survey.</p>
+		<p class="text-muted-foreground">Enter the team passcode to create or manage a match poll.</p>
 	</div>
 
 	<Card>

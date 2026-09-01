@@ -6,9 +6,9 @@
 	import Users from '@lucide/svelte/icons/users';
 	import House from '@lucide/svelte/icons/house';
 
-	type SurveyLink = { slug: string; title: string; status: string };
+	type PollLink = { slug: string; title: string; status: string };
 
-	let { surveys = [] }: { surveys?: SurveyLink[] } = $props();
+	let { polls = [] }: { polls?: PollLink[] } = $props();
 
 	const sidebar = Sidebar.useSidebar();
 
@@ -54,7 +54,7 @@
 							{#snippet child({ props })}
 								<a href={resolve('/(app)/create')} onclick={closeOnMobile} {...props}>
 									<Plus />
-									<span>Create survey</span>
+									<span>Create poll</span>
 								</a>
 							{/snippet}
 						</Sidebar.MenuButton>
@@ -74,29 +74,29 @@
 		</Sidebar.Group>
 
 		<Sidebar.Group>
-			<Sidebar.GroupLabel>Surveys</Sidebar.GroupLabel>
+			<Sidebar.GroupLabel>Polls</Sidebar.GroupLabel>
 			<Sidebar.GroupContent>
-				{#if surveys.length === 0}
-					<p class="text-muted-foreground px-2 py-1.5 text-xs">No surveys yet.</p>
+				{#if polls.length === 0}
+					<p class="text-muted-foreground px-2 py-1.5 text-xs">No polls yet.</p>
 				{:else}
 					<Sidebar.Menu class="gap-1.5">
-						{#each surveys as survey (survey.slug)}
+						{#each polls as poll (poll.slug)}
 							<Sidebar.MenuItem>
-								<Sidebar.MenuButton isActive={page.params.slug === survey.slug}>
+								<Sidebar.MenuButton isActive={page.params.slug === poll.slug}>
 									{#snippet child({ props })}
 										<a
-											href={resolve('/(app)/s/[slug]/manage', { slug: survey.slug })}
-											title={survey.title}
+											href={resolve('/(app)/p/[slug]/manage', { slug: poll.slug })}
+											title={poll.title}
 											onclick={closeOnMobile}
 											{...props}
 										>
 											<span
 												class={[
 													'size-2 shrink-0 rounded-full',
-													statusDot[survey.status] ?? 'bg-muted-foreground'
+													statusDot[poll.status] ?? 'bg-muted-foreground'
 												]}
 											></span>
-											<span>{survey.title}</span>
+											<span>{poll.title}</span>
 										</a>
 									{/snippet}
 								</Sidebar.MenuButton>
