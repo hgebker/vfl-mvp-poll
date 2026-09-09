@@ -112,6 +112,8 @@
 	"results_open_voter_view": "Vote",
 	"results_chart_title": "Votes per player",
 	"results_chart_votes_label": "Votes",
+	"results_error_poll_not_found": "Poll not found",
+	"results_error_poll_not_closed": "Results are hidden until the poll is closed",
 
 	"poll_nav_manage": "Manage",
 	"poll_nav_results": "Results",

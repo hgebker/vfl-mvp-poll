@@ -112,6 +112,8 @@
 	"results_open_voter_view": "Abstimmen",
 	"results_chart_title": "Stimmen pro Spieler",
 	"results_chart_votes_label": "Stimmen",
+	"results_error_poll_not_found": "Umfrage nicht gefunden",
+	"results_error_poll_not_closed": "Die Ergebnisse werden erst nach Schließung der Umfrage angezeigt",
 
 	"poll_nav_manage": "Verwalten",
 	"poll_nav_results": "Ergebnisse",

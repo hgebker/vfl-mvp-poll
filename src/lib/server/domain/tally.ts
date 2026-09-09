@@ -4,7 +4,13 @@ import * as schema from '../db/schema';
 
 type Db = BetterSQLite3Database<typeof schema>;
 
-export class ResultsNotAvailableError extends Error {}
+export type ResultsNotAvailableReason = 'poll_not_found' | 'poll_not_closed';
+
+export class ResultsNotAvailableError extends Error {
+	constructor(public reason: ResultsNotAvailableReason) {
+		super(reason);
+	}
+}
 
 export interface PlayerTally {
 	playerId: string;
@@ -65,8 +71,8 @@ export function getTimeline(db: Db, pollId: string): TimelineBucket[] {
 
 function assertClosed(db: Db, pollId: string): void {
 	const poll = db.select().from(schema.polls).where(eq(schema.polls.id, pollId)).get();
-	if (!poll) throw new ResultsNotAvailableError('Poll not found');
+	if (!poll) throw new ResultsNotAvailableError('poll_not_found');
 	if (poll.status !== 'closed') {
-		throw new ResultsNotAvailableError('Results are hidden until the poll is closed');
+		throw new ResultsNotAvailableError('poll_not_closed');
 	}
 }

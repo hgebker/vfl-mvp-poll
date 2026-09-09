@@ -2,7 +2,9 @@
 // for information about these interfaces
 declare global {
 	namespace App {
-		// interface Error {}
+		interface Error {
+			title?: string;
+		}
 		interface Locals {
 			/** Set by hooks.server.ts when a valid team-member session cookie is present. */
 			teamId: string | null;
