@@ -27,11 +27,7 @@
 <Sidebar.Root>
 	<Sidebar.Header>
 		<div class="flex items-center gap-2 px-2 py-1.5">
-			<div
-				class="bg-primary text-primary-foreground flex size-7 items-center justify-center rounded-md text-xs font-bold"
-			>
-				MV
-			</div>
+			<img src="/favicon.svg" alt="" class="size-7 shrink-0" />
 			<span class="font-display text-base font-semibold">{m.app_title()}</span>
 		</div>
 	</Sidebar.Header>

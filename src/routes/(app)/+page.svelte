@@ -44,6 +44,7 @@
 
 <div class="page pt-8">
 	<div class="flex flex-col items-center gap-2 text-center">
+		<img src="/favicon.svg" alt="" class="size-12" />
 		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{m.home_welcome()}</h3>
 		<p class="leading-7">
 			{m.home_subtitle()}
