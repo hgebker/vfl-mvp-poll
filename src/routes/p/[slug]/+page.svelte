@@ -3,9 +3,11 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Card, CardContent } from '$lib/components/ui/card/index.js';
 	import { Checkbox } from '$lib/components/ui/checkbox/index.js';
+	import PublicHeader from '$lib/components/public-header.svelte';
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import ClockIcon from '@lucide/svelte/icons/clock';
 	import LockIcon from '@lucide/svelte/icons/lock';
+	import * as m from '$lib/paraglide/messages';
 	import type { ActionData, PageData } from './$types';
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
@@ -25,9 +27,11 @@
 	<title>{data.title}</title>
 </svelte:head>
 
+<PublicHeader />
+
 <div class="page">
 	<div class="flex flex-col items-center gap-2 text-center">
-		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">Matchday vote</h3>
+		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{m.vote_title()}</h3>
 		<p class="text-muted-foreground">{data.title}</p>
 	</div>
 
@@ -37,8 +41,8 @@
 				<div class="bg-primary/15 text-primary rounded-full p-4">
 					<CheckIcon class="size-8" strokeWidth={3} />
 				</div>
-				<p class="text-lg font-semibold">Thanks for voting!</p>
-				<p class="text-muted-foreground">Results will be shown once the poll is closed.</p>
+				<p class="text-lg font-semibold">{m.vote_thanks()}</p>
+				<p class="text-muted-foreground">{m.vote_results_shown_when_closed()}</p>
 			</CardContent>
 		</Card>
 	{:else if data.status === 'upcoming'}
@@ -47,8 +51,8 @@
 				<div class="bg-muted text-muted-foreground rounded-full p-4">
 					<ClockIcon class="size-8" strokeWidth={2} />
 				</div>
-				<p class="text-lg font-semibold">Voting hasn't opened yet</p>
-				<p class="text-muted-foreground">Check back soon.</p>
+				<p class="text-lg font-semibold">{m.vote_not_open_title()}</p>
+				<p class="text-muted-foreground">{m.vote_not_open_subtitle()}</p>
 			</CardContent>
 		</Card>
 	{:else if data.status === 'closed'}
@@ -57,10 +61,10 @@
 				<div class="bg-muted text-muted-foreground rounded-full p-4">
 					<LockIcon class="size-8" strokeWidth={2} />
 				</div>
-				<p class="text-lg font-semibold">Voting has closed</p>
-				<p class="text-muted-foreground">Check out the results instead.</p>
+				<p class="text-lg font-semibold">{m.vote_closed_title()}</p>
+				<p class="text-muted-foreground">{m.vote_closed_subtitle()}</p>
 				<Button href={resolve('/p/[slug]/results', { slug: data.slug })} variant="secondary">
-					See results
+					{m.vote_see_results()}
 				</Button>
 			</CardContent>
 		</Card>
@@ -70,13 +74,15 @@
 				<div class="bg-muted text-muted-foreground rounded-full p-4">
 					<CheckIcon class="size-8" strokeWidth={2} />
 				</div>
-				<p class="text-lg font-semibold">You've already voted</p>
-				<p class="text-muted-foreground">Thanks for voting!</p>
+				<p class="text-lg font-semibold">{m.vote_already_voted_title()}</p>
+				<p class="text-muted-foreground">{m.vote_already_voted_subtitle()}</p>
 			</CardContent>
 		</Card>
 	{:else}
 		<div class="flex items-center justify-between px-1">
-			<p class="text-muted-foreground text-sm font-bold tracking-wide uppercase">Tap 2 players</p>
+			<p class="text-muted-foreground text-sm font-bold tracking-wide uppercase">
+				{m.vote_tap_two_players()}
+			</p>
 			<div class="flex gap-1.5">
 				{#each [0, 1] as i (i)}
 					<div
@@ -123,7 +129,7 @@
 				<p class="text-destructive text-center font-medium">{form.error}</p>
 			{/if}
 
-			<Button type="submit" size="lg" disabled={selected.length !== 2}>Vote now</Button>
+			<Button type="submit" size="lg" disabled={selected.length !== 2}>{m.vote_submit()}</Button>
 		</form>
 	{/if}
 </div>

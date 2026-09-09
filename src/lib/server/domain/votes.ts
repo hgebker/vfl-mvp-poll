@@ -4,7 +4,18 @@ import * as schema from '../db/schema';
 
 type Db = BetterSQLite3Database<typeof schema>;
 
-export class VoteRejectedError extends Error {}
+export type VoteRejectedReason =
+	| 'poll_not_found'
+	| 'poll_not_open'
+	| 'invalid_picks'
+	| 'not_on_roster'
+	| 'already_voted';
+
+export class VoteRejectedError extends Error {
+	constructor(public reason: VoteRejectedReason) {
+		super(reason);
+	}
+}
 
 /**
  * Casts a ballot: exactly two distinct picks from the poll's roster.
@@ -19,12 +30,12 @@ export class VoteRejectedError extends Error {}
  */
 export function castVote(db: Db, pollId: string, token: string, playerIds: string[]): void {
 	const poll = db.select().from(schema.polls).where(eq(schema.polls.id, pollId)).get();
-	if (!poll) throw new VoteRejectedError('Poll not found');
-	if (poll.status !== 'open') throw new VoteRejectedError('Poll is not open for voting');
+	if (!poll) throw new VoteRejectedError('poll_not_found');
+	if (poll.status !== 'open') throw new VoteRejectedError('poll_not_open');
 
 	const distinctPicks = new Set(playerIds);
 	if (distinctPicks.size !== 2) {
-		throw new VoteRejectedError('A ballot must contain exactly two distinct picks');
+		throw new VoteRejectedError('invalid_picks');
 	}
 
 	const roster = db
@@ -38,7 +49,7 @@ export function castVote(db: Db, pollId: string, token: string, playerIds: strin
 		)
 		.all();
 	if (roster.length !== 2) {
-		throw new VoteRejectedError('Both picks must be on the poll roster');
+		throw new VoteRejectedError('not_on_roster');
 	}
 
 	const existingReceipt = db
@@ -47,7 +58,7 @@ export function castVote(db: Db, pollId: string, token: string, playerIds: strin
 		.where(and(eq(schema.voteReceipts.pollId, pollId), eq(schema.voteReceipts.token, token)))
 		.get();
 	if (existingReceipt) {
-		throw new VoteRejectedError('This browser has already voted in this poll');
+		throw new VoteRejectedError('already_voted');
 	}
 
 	db.transaction((tx) => {

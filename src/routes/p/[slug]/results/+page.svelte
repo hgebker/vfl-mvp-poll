@@ -4,11 +4,12 @@
 	import { ChartContainer, type ChartConfig } from '$lib/components/ui/chart/index.js';
 	import SelectedPlayers from '$lib/components/selected-players.svelte';
 	import PollNavTabs from '$lib/components/poll-nav-tabs.svelte';
+	import * as m from '$lib/paraglide/messages';
 	import type { PageData } from './$types';
 
 	const chartConfig = {
 		votes: {
-			label: 'Votes',
+			label: m.results_chart_votes_label(),
 			color: 'var(--primary)'
 		}
 	} satisfies ChartConfig;
@@ -25,12 +26,12 @@
 
 	<div class="flex flex-col items-center gap-2 text-center">
 		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{data.title}</h3>
-		<p class="text-muted-foreground">Results</p>
+		<p class="text-muted-foreground">{m.results_title()}</p>
 	</div>
 
 	<Card>
 		<CardHeader>
-			<CardTitle>Votes per player</CardTitle>
+			<CardTitle>{m.results_chart_title()}</CardTitle>
 		</CardHeader>
 
 		<CardContent>

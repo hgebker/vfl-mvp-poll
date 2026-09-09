@@ -26,6 +26,7 @@
 	import SelectedPlayers from '$lib/components/selected-players.svelte';
 	import PollNavTabs from '$lib/components/poll-nav-tabs.svelte';
 	import CopyIcon from '@lucide/svelte/icons/copy';
+	import * as m from '$lib/paraglide/messages';
 	import type { ActionData, PageData } from './$types';
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
@@ -38,7 +39,7 @@
 
 	async function copyLink() {
 		await navigator.clipboard.writeText(data.shareUrl);
-		toast.success('Link copied');
+		toast.success(m.manage_link_copied());
 	}
 
 	const statusVariant: Record<string, BadgeVariant> = {
@@ -62,10 +63,8 @@
 
 	<Card>
 		<CardHeader>
-			<CardTitle>Controls</CardTitle>
-			<CardDescription
-				>Open voting when you're ready, then close it once everyone has voted.</CardDescription
-			>
+			<CardTitle>{m.manage_controls_title()}</CardTitle>
+			<CardDescription>{m.manage_controls_desc()}</CardDescription>
 		</CardHeader>
 
 		<CardContent>
@@ -75,21 +74,23 @@
 			{#if data.status === 'upcoming'}
 				<form method="POST" action="?/transition">
 					<input type="hidden" name="next" value="open" />
-					<Button type="submit" size="lg" class="w-full">Open voting</Button>
+					<Button type="submit" size="lg" class="w-full">{m.manage_open_voting()}</Button>
 				</form>
 			{:else if data.status === 'open'}
 				<form method="POST" action="?/transition">
 					<input type="hidden" name="next" value="closed" />
-					<Button type="submit" size="lg" variant="destructive" class="w-full">Close voting</Button>
+					<Button type="submit" size="lg" variant="destructive" class="w-full"
+						>{m.manage_close_voting()}</Button
+					>
 				</form>
 			{:else}
 				<p class="text-muted-foreground text-center">
-					Voting is closed.
+					{m.manage_voting_closed()}
 					<a
 						href={resolve('/p/[slug]/results', { slug: data.slug })}
 						class="text-primary underline"
 					>
-						See results
+						{m.manage_see_results()}
 					</a>
 				</p>
 			{/if}
@@ -98,16 +99,19 @@
 
 	<Card>
 		<CardHeader>
-			<CardTitle>Public link</CardTitle>
-			<CardDescription
-				>Share this link or QR code with your players so they can cast their vote.</CardDescription
-			>
+			<CardTitle>{m.manage_public_link_title()}</CardTitle>
+			<CardDescription>{m.manage_public_link_desc()}</CardDescription>
 		</CardHeader>
 
 		<CardContent class="flex flex-col gap-4">
 			<div class="bg-secondary/60 flex items-center gap-2 rounded-2xl p-3">
 				<code class="flex-1 overflow-hidden text-sm text-ellipsis">{data.shareUrl}</code>
-				<Button variant="secondary" size="icon" onclick={copyLink} aria-label="Copy link">
+				<Button
+					variant="secondary"
+					size="icon"
+					onclick={copyLink}
+					aria-label={m.manage_copy_link_aria_label()}
+				>
 					<CopyIcon class="size-4" />
 				</Button>
 			</div>
@@ -116,7 +120,7 @@
 				<img
 					class="border-border mx-auto rounded-2xl border"
 					src={qrDataUrl}
-					alt="QR code linking to the poll"
+					alt={m.manage_qr_alt()}
 					width="200"
 					height="200"
 				/>
@@ -128,29 +132,32 @@
 
 	<Card class="border-destructive">
 		<CardHeader>
-			<CardTitle>Danger zone</CardTitle>
-			<CardDescription>Permanently delete this poll and all of its votes.</CardDescription>
+			<CardTitle>{m.manage_danger_zone_title()}</CardTitle>
+			<CardDescription>{m.manage_danger_zone_desc()}</CardDescription>
 		</CardHeader>
 
 		<CardContent>
 			<AlertDialog>
 				<AlertDialogTrigger class="w-full">
 					{#snippet child({ props })}
-						<Button {...props} size="lg" variant="destructive" class="w-full">Delete poll</Button>
+						<Button {...props} size="lg" variant="destructive" class="w-full"
+							>{m.manage_delete_poll()}</Button
+						>
 					{/snippet}
 				</AlertDialogTrigger>
 				<AlertDialogContent>
 					<AlertDialogHeader>
-						<AlertDialogTitle>Delete this poll?</AlertDialogTitle>
+						<AlertDialogTitle>{m.manage_delete_confirm_title()}</AlertDialogTitle>
 						<AlertDialogDescription>
-							This permanently deletes "{data.title}" and all votes cast for it. This action cannot
-							be undone.
+							{m.manage_delete_confirm_desc({ title: data.title })}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogCancel>{m.manage_cancel()}</AlertDialogCancel>
 						<form method="POST" action="?/delete">
-							<AlertDialogAction type="submit" variant="destructive">Delete poll</AlertDialogAction>
+							<AlertDialogAction type="submit" variant="destructive"
+								>{m.manage_delete_poll()}</AlertDialogAction
+							>
 						</form>
 					</AlertDialogFooter>
 				</AlertDialogContent>

@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import { cn } from '$lib/utils.js';
+	import * as m from '$lib/paraglide/messages';
 
 	const slug = $derived(page.params.slug!);
 	const isManage = $derived(page.route.id === '/(app)/p/[slug]/manage');
@@ -17,7 +18,7 @@
 				isManage ? 'bg-background shadow-sm' : 'text-muted-foreground hover:text-foreground'
 			)}
 		>
-			Manage
+			{m.poll_nav_manage()}
 		</a>
 		<a
 			href={resolve('/p/[slug]/results', { slug })}
@@ -26,7 +27,7 @@
 				isResults ? 'bg-background shadow-sm' : 'text-muted-foreground hover:text-foreground'
 			)}
 		>
-			Results
+			{m.poll_nav_results()}
 		</a>
 	</div>
 {/if}

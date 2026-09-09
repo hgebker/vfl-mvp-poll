@@ -6,6 +6,7 @@
 	import PollNavTabs from '$lib/components/poll-nav-tabs.svelte';
 	import LockIcon from '@lucide/svelte/icons/lock';
 	import CircleAlertIcon from '@lucide/svelte/icons/circle-alert';
+	import * as m from '$lib/paraglide/messages';
 
 	const slug = $derived(page.params.slug!);
 	const isHidden = $derived(page.status === 403);
@@ -24,10 +25,12 @@
 				{/if}
 			</div>
 			<p class="text-lg font-semibold">
-				{isHidden ? "Results aren't available yet" : 'Something went wrong'}
+				{isHidden ? m.results_head_error_not_available_title() : m.results_head_error_generic_title()}
 			</p>
 			<p class="text-muted-foreground">{page.error?.message}</p>
-			<Button href={resolve('/p/[slug]', { slug })} variant="secondary">Back to vote</Button>
+			<Button href={resolve('/p/[slug]', { slug })} variant="secondary"
+				>{m.results_back_to_vote()}</Button
+			>
 		</CardContent>
 	</Card>
 </div>

@@ -7,6 +7,7 @@
 		CardDescription
 	} from '$lib/components/ui/card/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
+	import * as m from '$lib/paraglide/messages';
 
 	type Player = {
 		id: string;
@@ -28,9 +29,9 @@
 
 <Card>
 	<CardHeader>
-		<CardTitle>Match roster - {players.length} players</CardTitle>
+		<CardTitle>{m.selected_players_title({ count: players.length })}</CardTitle>
 		<CardDescription>
-			The players eligible to receive votes in this poll, ranked by vote count once voting closes.
+			{m.selected_players_desc()}
 		</CardDescription>
 	</CardHeader>
 
@@ -44,7 +45,7 @@
 					{#if player.votes !== undefined}
 						<Badge variant="secondary">
 							{player.votes}
-							{player.votes === 1 ? 'vote' : 'votes'}
+							{player.votes === 1 ? m.selected_players_vote_singular() : m.selected_players_vote_plural()}
 						</Badge>
 					{/if}
 				</li>

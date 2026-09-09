@@ -5,6 +5,7 @@
 	import Plus from '@lucide/svelte/icons/plus';
 	import Users from '@lucide/svelte/icons/users';
 	import House from '@lucide/svelte/icons/house';
+	import * as m from '$lib/paraglide/messages';
 
 	type PollLink = { slug: string; title: string; status: string };
 
@@ -31,7 +32,7 @@
 			>
 				MV
 			</div>
-			<span class="font-display text-base font-semibold">MVP Vote</span>
+			<span class="font-display text-base font-semibold">{m.app_title()}</span>
 		</div>
 	</Sidebar.Header>
 
@@ -44,7 +45,7 @@
 							{#snippet child({ props })}
 								<a href={resolve('/(app)')} onclick={closeOnMobile} {...props}>
 									<House />
-									<span>Home</span>
+									<span>{m.nav_home()}</span>
 								</a>
 							{/snippet}
 						</Sidebar.MenuButton>
@@ -54,7 +55,7 @@
 							{#snippet child({ props })}
 								<a href={resolve('/(app)/create')} onclick={closeOnMobile} {...props}>
 									<Plus />
-									<span>Create poll</span>
+									<span>{m.nav_create_poll()}</span>
 								</a>
 							{/snippet}
 						</Sidebar.MenuButton>
@@ -64,7 +65,7 @@
 							{#snippet child({ props })}
 								<a href={resolve('/(app)/admin/players')} onclick={closeOnMobile} {...props}>
 									<Users />
-									<span>Players</span>
+									<span>{m.nav_players()}</span>
 								</a>
 							{/snippet}
 						</Sidebar.MenuButton>
@@ -74,10 +75,10 @@
 		</Sidebar.Group>
 
 		<Sidebar.Group>
-			<Sidebar.GroupLabel>Polls</Sidebar.GroupLabel>
+			<Sidebar.GroupLabel>{m.nav_polls_group()}</Sidebar.GroupLabel>
 			<Sidebar.GroupContent>
 				{#if polls.length === 0}
-					<p class="text-muted-foreground px-2 py-1.5 text-xs">No polls yet.</p>
+					<p class="text-muted-foreground px-2 py-1.5 text-xs">{m.nav_no_polls()}</p>
 				{:else}
 					<Sidebar.Menu class="gap-1.5">
 						{#each polls as poll (poll.slug)}

@@ -9,6 +9,7 @@ import {
 	setPlayerActive,
 	updatePlayer
 } from '$lib/server/domain/players';
+import * as m from '$lib/paraglide/messages';
 
 export const load: PageServerLoad = ({ locals, url }) => {
 	const teamId = requireTeam(locals, url.pathname);
@@ -25,7 +26,7 @@ export const actions: Actions = {
 		const jerseyNumber = Number(jerseyNumberRaw);
 
 		if (!firstName || !lastName) {
-			return fail(400, { error: 'Enter both first and last name.' });
+			return fail(400, { error: m.players_error_name_required() });
 		}
 
 		if (
@@ -34,13 +35,13 @@ export const actions: Actions = {
 			jerseyNumber < 0 ||
 			jerseyNumber > 99
 		) {
-			return fail(400, { error: 'Enter a jersey number between 0 and 99.' });
+			return fail(400, { error: m.players_error_jersey_range() });
 		}
 
 		try {
 			createPlayer(db, teamId, firstName, lastName, jerseyNumber);
 		} catch {
-			return fail(400, { error: 'That jersey number is already taken.' });
+			return fail(400, { error: m.players_error_jersey_taken() });
 		}
 	},
 
@@ -50,7 +51,7 @@ export const actions: Actions = {
 		const playerId = String(form.get('playerId') ?? '');
 		const active = form.get('active') === 'true';
 
-		if (!playerId) return fail(400, { error: 'Missing player.' });
+		if (!playerId) return fail(400, { error: m.players_error_missing_player() });
 
 		setPlayerActive(db, teamId, playerId, active);
 	},
@@ -64,10 +65,10 @@ export const actions: Actions = {
 		const jerseyNumberRaw = String(form.get('jerseyNumber') ?? '').trim();
 		const jerseyNumber = Number(jerseyNumberRaw);
 
-		if (!playerId) return fail(400, { error: 'Missing player.' });
+		if (!playerId) return fail(400, { error: m.players_error_missing_player() });
 
 		if (!firstName || !lastName) {
-			return fail(400, { error: 'Enter both first and last name.' });
+			return fail(400, { error: m.players_error_name_required() });
 		}
 
 		if (
@@ -76,13 +77,13 @@ export const actions: Actions = {
 			jerseyNumber < 0 ||
 			jerseyNumber > 99
 		) {
-			return fail(400, { error: 'Enter a jersey number between 0 and 99.' });
+			return fail(400, { error: m.players_error_jersey_range() });
 		}
 
 		try {
 			updatePlayer(db, teamId, playerId, firstName, lastName, jerseyNumber);
 		} catch {
-			return fail(400, { error: 'That jersey number is already taken.' });
+			return fail(400, { error: m.players_error_jersey_taken() });
 		}
 	},
 
@@ -91,7 +92,7 @@ export const actions: Actions = {
 		const form = await request.formData();
 		const playerId = String(form.get('playerId') ?? '');
 
-		if (!playerId) return fail(400, { error: 'Missing player.' });
+		if (!playerId) return fail(400, { error: m.players_error_missing_player() });
 
 		deletePlayer(db, teamId, playerId);
 	}

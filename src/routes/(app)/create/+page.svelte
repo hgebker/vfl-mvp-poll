@@ -17,11 +17,13 @@
 	import { cn } from '$lib/utils.js';
 	import { DateFormatter, getLocalTimeZone, type DateValue } from '@internationalized/date';
 	import CalendarIcon from '@lucide/svelte/icons/calendar';
+	import { getLocale } from '$lib/paraglide/runtime';
+	import * as m from '$lib/paraglide/messages';
 	import type { ActionData, PageData } from './$types';
 
 	let { data, form }: { data: PageData; form: ActionData } = $props();
 
-	const df = new DateFormatter('en-GB', { dateStyle: 'long' });
+	const df = new DateFormatter(getLocale(), { dateStyle: 'long' });
 
 	let opponent = $state('');
 	let matchDate = $state<DateValue | undefined>(undefined);
@@ -29,28 +31,28 @@
 </script>
 
 <svelte:head>
-	<title>New poll</title>
+	<title>{m.create_head_title()}</title>
 </svelte:head>
 
 <div class="page">
 	<div class="flex flex-col items-center gap-2 text-center">
-		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">New poll</h3>
+		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{m.create_title()}</h3>
 	</div>
 
 	<form method="POST" class="flex flex-col gap-4">
 		<Card>
 			<CardHeader>
-				<CardTitle>Match Details</CardTitle>
-				<CardDescription>Enter basic details about the match.</CardDescription>
+				<CardTitle>{m.create_match_details_title()}</CardTitle>
+				<CardDescription>{m.create_match_details_desc()}</CardDescription>
 			</CardHeader>
 
 			<CardContent class="flex flex-col gap-4">
 				<div class="flex flex-col gap-2">
-					<Label for="opponent">Opponent</Label>
+					<Label for="opponent">{m.create_opponent_label()}</Label>
 					<Input id="opponent" name="opponent" bind:value={opponent} required />
 				</div>
 				<div class="flex flex-col gap-2">
-					<Label for="matchDate">Match date</Label>
+					<Label for="matchDate">{m.create_match_date_label()}</Label>
 					<input type="hidden" name="matchDate" value={matchDate ? matchDate.toString() : ''} />
 					<Popover.Root>
 						<Popover.Trigger id="matchDate">
@@ -64,7 +66,7 @@
 									)}
 								>
 									<CalendarIcon />
-									{matchDate ? df.format(matchDate.toDate(getLocalTimeZone())) : 'Pick a date'}
+									{matchDate ? df.format(matchDate.toDate(getLocalTimeZone())) : m.create_pick_date()}
 								</Button>
 							{/snippet}
 						</Popover.Trigger>
@@ -75,19 +77,19 @@
 				</div>
 
 				<fieldset class="flex flex-col gap-2">
-					<legend class="mb-1 text-sm font-semibold">Home or away?</legend>
+					<legend class="mb-1 text-sm font-semibold">{m.create_home_or_away_label()}</legend>
 					<RadioGroup bind:value={homeAway} name="homeAway" class="grid-cols-2 gap-3!">
 						<Label
 							class="border-border has-data-[state=checked]:border-primary has-data-[state=checked]:bg-primary/10 flex items-center gap-3 rounded-2xl border-2 px-4 py-3 font-medium"
 						>
 							<RadioGroupItem value="home" />
-							Home
+							{m.create_home()}
 						</Label>
 						<Label
 							class="border-border has-data-[state=checked]:border-primary has-data-[state=checked]:bg-primary/10 flex items-center gap-3 rounded-2xl border-2 px-4 py-3 font-medium"
 						>
 							<RadioGroupItem value="away" />
-							Away
+							{m.create_away()}
 						</Label>
 					</RadioGroup>
 				</fieldset>
@@ -96,19 +98,20 @@
 
 		<Card>
 			<CardHeader>
-				<CardTitle>Match Roster</CardTitle>
+				<CardTitle>{m.create_roster_title()}</CardTitle>
 				<CardDescription>
-					Pick who's votable — visitors will choose two of these players as MVP.
+					{m.create_roster_desc()}
 				</CardDescription>
 			</CardHeader>
 
 			<CardContent>
 				{#if data.players.length === 0}
 					<p class="text-muted-foreground text-sm">
-						No active players yet. Add some in
-						<a href={resolve('/(app)/admin/players')} class="text-primary underline">player admin</a
+						{m.create_no_players_before_link()}
+						<a href={resolve('/(app)/admin/players')} class="text-primary underline"
+							>{m.create_no_players_link()}</a
 						>
-						first.
+						{m.create_no_players_after_link()}
 					</p>
 				{/if}
 
@@ -131,6 +134,6 @@
 			<p class="text-destructive text-center font-medium">{form.error}</p>
 		{/if}
 
-		<Button type="submit" size="lg">Create poll</Button>
+		<Button type="submit" size="lg">{m.create_submit()}</Button>
 	</form>
 </div>

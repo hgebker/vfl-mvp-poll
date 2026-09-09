@@ -2,8 +2,17 @@ import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
 import { getPollBySlug, getPollRoster, pollTitle } from '$lib/server/domain/polls';
-import { castVote, VoteRejectedError } from '$lib/server/domain/votes';
+import { castVote, VoteRejectedError, type VoteRejectedReason } from '$lib/server/domain/votes';
 import { getOrCreateVoteToken, getVoteToken } from '$lib/server/voteToken';
+import * as m from '$lib/paraglide/messages';
+
+const voteRejectedMessages: Record<VoteRejectedReason, () => string> = {
+	poll_not_found: m.vote_rejected_poll_not_found,
+	poll_not_open: m.vote_rejected_poll_not_open,
+	invalid_picks: m.vote_rejected_invalid_picks,
+	not_on_roster: m.vote_rejected_not_on_roster,
+	already_voted: m.vote_rejected_already_voted
+};
 
 export const load: PageServerLoad = ({ params, cookies }) => {
 	const poll = getPollBySlug(db, params.slug);
@@ -34,7 +43,7 @@ export const actions: Actions = {
 			castVote(db, poll.id, token, playerIds);
 		} catch (err) {
 			if (err instanceof VoteRejectedError) {
-				return fail(400, { error: err.message });
+				return fail(400, { error: voteRejectedMessages[err.reason]() });
 			}
 			throw err;
 		}

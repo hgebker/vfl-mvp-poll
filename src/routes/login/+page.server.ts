@@ -4,6 +4,7 @@ import { db } from '$lib/server/db';
 import { getOnlyTeam } from '$lib/server/domain/teams';
 import { verifyPasscode } from '$lib/server/domain/passcode';
 import { setSessionCookie } from '$lib/server/auth';
+import * as m from '$lib/paraglide/messages';
 
 export const load: PageServerLoad = ({ url, locals }) => {
 	const redirectTo = url.searchParams.get('redirectTo') ?? '/create';
@@ -15,11 +16,11 @@ export const actions: Actions = {
 	default: async ({ request, cookies, url }) => {
 		const form = await request.formData();
 		const passcode = String(form.get('passcode') ?? '');
-		if (!passcode) return fail(400, { error: 'Enter the team passcode.' });
+		if (!passcode) return fail(400, { error: m.login_error_passcode_required() });
 
 		const team = getOnlyTeam(db);
 		const valid = await verifyPasscode(db, team.id, passcode);
-		if (!valid) return fail(400, { error: 'Wrong passcode.' });
+		if (!valid) return fail(400, { error: m.login_error_wrong_passcode() });
 
 		setSessionCookie(cookies, team.id);
 		const redirectTo = url.searchParams.get('redirectTo') ?? '/';

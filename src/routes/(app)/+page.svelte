@@ -4,32 +4,33 @@
 	import PlusIcon from '@lucide/svelte/icons/plus';
 	import UsersIcon from '@lucide/svelte/icons/users';
 	import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
+	import * as m from '$lib/paraglide/messages';
 
 	const links = [
 		{
 			href: resolve('/(app)/create'),
 			icon: PlusIcon,
-			title: 'Create a poll',
-			description: 'Set up a new MVP vote for your players.'
+			title: m.home_create_poll_title(),
+			description: m.home_create_poll_desc()
 		},
 		{
 			href: resolve('/(app)/admin/players'),
 			icon: UsersIcon,
-			title: 'Manage players',
-			description: 'Add, edit, or remove the players who can be voted for.'
+			title: m.home_manage_players_title(),
+			description: m.home_manage_players_desc()
 		}
 	];
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	<title>{m.home_head_title()}</title>
 </svelte:head>
 
 <div class="page pt-8">
 	<div class="flex flex-col items-center gap-2 text-center">
-		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">Welcome!</h3>
+		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{m.home_welcome()}</h3>
 		<p class="leading-7">
-			Create MVP votes for your matches and let your players decide who stood out.
+			{m.home_subtitle()}
 		</p>
 	</div>
 

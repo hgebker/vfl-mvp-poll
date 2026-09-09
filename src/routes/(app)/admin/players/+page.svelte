@@ -25,6 +25,7 @@
 	import { Switch } from '$lib/components/ui/switch/index.js';
 	import PencilIcon from '@lucide/svelte/icons/pencil';
 	import Trash2Icon from '@lucide/svelte/icons/trash-2';
+	import * as m from '$lib/paraglide/messages';
 	import type { PageProps } from './$types';
 
 	let { data, form }: PageProps = $props();
@@ -51,27 +52,27 @@
 </script>
 
 <svelte:head>
-	<title>Players</title>
+	<title>{m.players_head_title()}</title>
 </svelte:head>
 
 <div class="page">
 	<div class="flex flex-col items-center gap-2 text-center">
-		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">Players</h3>
+		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{m.players_title()}</h3>
 	</div>
 
 	<Card>
 		<CardContent>
 			<form method="POST" action="?/create" use:enhance class="flex flex-col gap-4">
 				<div class="flex flex-col gap-2">
-					<Label for="firstName">First name</Label>
+					<Label for="firstName">{m.players_first_name_label()}</Label>
 					<Input id="firstName" name="firstName" bind:value={firstName} required />
 				</div>
 				<div class="flex flex-col gap-2">
-					<Label for="lastName">Last name</Label>
+					<Label for="lastName">{m.players_last_name_label()}</Label>
 					<Input id="lastName" name="lastName" bind:value={lastName} required />
 				</div>
 				<div class="flex flex-col gap-2">
-					<Label for="jerseyNumber">Jersey number</Label>
+					<Label for="jerseyNumber">{m.players_jersey_number_label()}</Label>
 					<Input
 						id="jerseyNumber"
 						name="jerseyNumber"
@@ -85,7 +86,7 @@
 				{#if form?.error}
 					<p class="text-destructive text-center font-medium">{form.error}</p>
 				{/if}
-				<Button type="submit" size="lg">Add player</Button>
+				<Button type="submit" size="lg">{m.players_add_submit()}</Button>
 			</form>
 		</CardContent>
 	</Card>
@@ -102,7 +103,7 @@
 					<Button
 						variant="ghost"
 						size="icon"
-						aria-label="Edit player"
+						aria-label={m.players_edit_aria_label()}
 						onclick={() => openEditSheet(player)}
 					>
 						<PencilIcon class="size-4" />
@@ -111,26 +112,26 @@
 					<AlertDialog>
 						<AlertDialogTrigger>
 							{#snippet child({ props })}
-								<Button {...props} variant="ghost" size="icon" aria-label="Delete player">
+								<Button {...props} variant="ghost" size="icon" aria-label={m.players_delete_aria_label()}>
 									<Trash2Icon class="size-4" />
 								</Button>
 							{/snippet}
 						</AlertDialogTrigger>
 						<AlertDialogContent>
 							<AlertDialogHeader>
-								<AlertDialogTitle>Delete this player?</AlertDialogTitle>
+								<AlertDialogTitle>{m.players_delete_confirm_title()}</AlertDialogTitle>
 								<AlertDialogDescription>
-									This permanently deletes {player.firstName}
-									{player.lastName} and removes them from any poll rosters and votes. This action cannot
-									be undone.
+									{m.players_delete_confirm_desc({
+										name: `${player.firstName} ${player.lastName}`
+									})}
 								</AlertDialogDescription>
 							</AlertDialogHeader>
 							<AlertDialogFooter>
-								<AlertDialogCancel>Cancel</AlertDialogCancel>
+								<AlertDialogCancel>{m.players_cancel()}</AlertDialogCancel>
 								<form method="POST" action="?/delete" use:enhance class="w-full sm:w-auto">
 									<input type="hidden" name="playerId" value={player.id} />
 									<AlertDialogAction type="submit" variant="destructive" class="w-full">
-										Delete player
+										{m.players_delete_submit()}
 									</AlertDialogAction>
 								</form>
 							</AlertDialogFooter>
@@ -159,7 +160,7 @@
 	<Sheet bind:open={editSheetOpen}>
 		<SheetContent>
 			<SheetHeader>
-				<SheetTitle>Edit player</SheetTitle>
+				<SheetTitle>{m.players_edit_sheet_title()}</SheetTitle>
 			</SheetHeader>
 			<form
 				method="POST"
@@ -176,15 +177,15 @@
 			>
 				<input type="hidden" name="playerId" value={editingPlayer?.id} />
 				<div class="flex flex-col gap-2">
-					<Label for="editFirstName">First name</Label>
+					<Label for="editFirstName">{m.players_first_name_label()}</Label>
 					<Input id="editFirstName" name="firstName" bind:value={editFirstName} required />
 				</div>
 				<div class="flex flex-col gap-2">
-					<Label for="editLastName">Last name</Label>
+					<Label for="editLastName">{m.players_last_name_label()}</Label>
 					<Input id="editLastName" name="lastName" bind:value={editLastName} required />
 				</div>
 				<div class="flex flex-col gap-2">
-					<Label for="editJerseyNumber">Jersey number</Label>
+					<Label for="editJerseyNumber">{m.players_jersey_number_label()}</Label>
 					<Input
 						id="editJerseyNumber"
 						name="jerseyNumber"
@@ -199,7 +200,7 @@
 					<p class="text-destructive text-center font-medium">{form.error}</p>
 				{/if}
 				<SheetFooter>
-					<Button type="submit" size="lg">Save changes</Button>
+					<Button type="submit" size="lg">{m.players_save_changes()}</Button>
 				</SheetFooter>
 			</form>
 		</SheetContent>
