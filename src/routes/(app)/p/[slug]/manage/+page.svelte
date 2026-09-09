@@ -26,6 +26,7 @@
 	import SelectedPlayers from '$lib/components/selected-players.svelte';
 	import PollNavTabs from '$lib/components/poll-nav-tabs.svelte';
 	import CopyIcon from '@lucide/svelte/icons/copy';
+	import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
 	import * as m from '$lib/paraglide/messages';
 	import type { ActionData, PageData } from './$types';
 
@@ -77,12 +78,25 @@
 					<Button type="submit" size="lg" class="w-full">{m.manage_open_voting()}</Button>
 				</form>
 			{:else if data.status === 'open'}
-				<form method="POST" action="?/transition">
-					<input type="hidden" name="next" value="closed" />
-					<Button type="submit" size="lg" variant="destructive" class="w-full"
-						>{m.manage_close_voting()}</Button
+				<div class="flex flex-col gap-2">
+					<Button
+						href={resolve('/p/[slug]', { slug: data.slug })}
+						target="_blank"
+						rel="noopener noreferrer"
+						variant="secondary"
+						size="lg"
+						class="w-full"
 					>
-				</form>
+						{m.results_open_voter_view()}
+						<ExternalLinkIcon class="size-4" />
+					</Button>
+					<form method="POST" action="?/transition">
+						<input type="hidden" name="next" value="closed" />
+						<Button type="submit" size="lg" variant="destructive" class="w-full"
+							>{m.manage_close_voting()}</Button
+						>
+					</form>
+				</div>
 			{:else}
 				<p class="text-muted-foreground text-center">
 					{m.manage_voting_closed()}

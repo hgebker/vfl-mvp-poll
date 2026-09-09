@@ -63,7 +63,11 @@
 				</div>
 				<p class="text-lg font-semibold">{m.vote_closed_title()}</p>
 				<p class="text-muted-foreground">{m.vote_closed_subtitle()}</p>
-				<Button href={resolve('/p/[slug]/results', { slug: data.slug })} variant="secondary">
+				<Button
+					href={resolve('/p/[slug]/results', { slug: data.slug })}
+					variant="secondary"
+					size="lg"
+				>
 					{m.vote_see_results()}
 				</Button>
 			</CardContent>

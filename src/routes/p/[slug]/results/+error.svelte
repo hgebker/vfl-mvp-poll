@@ -6,10 +6,12 @@
 	import PollNavTabs from '$lib/components/poll-nav-tabs.svelte';
 	import LockIcon from '@lucide/svelte/icons/lock';
 	import CircleAlertIcon from '@lucide/svelte/icons/circle-alert';
+	import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
 	import * as m from '$lib/paraglide/messages';
 
 	const slug = $derived(page.params.slug!);
 	const isHidden = $derived(page.status === 403);
+	const isAdmin = $derived(Boolean(page.data.teamId));
 </script>
 
 <div class="page">
@@ -28,9 +30,22 @@
 				{isHidden ? m.results_head_error_not_available_title() : m.results_head_error_generic_title()}
 			</p>
 			<p class="text-muted-foreground">{page.error?.message}</p>
-			<Button href={resolve('/p/[slug]', { slug })} variant="secondary"
-				>{m.results_back_to_vote()}</Button
-			>
+			{#if isAdmin}
+				<Button
+					href={resolve('/p/[slug]', { slug })}
+					target="_blank"
+					rel="noopener noreferrer"
+					variant="secondary"
+					size="lg"
+				>
+					{m.results_open_voter_view()}
+					<ExternalLinkIcon class="size-4" />
+				</Button>
+			{:else}
+				<Button href={resolve('/p/[slug]', { slug })} variant="secondary" size="lg"
+					>{m.results_back_to_vote()}</Button
+				>
+			{/if}
 		</CardContent>
 	</Card>
 </div>
