@@ -23,7 +23,7 @@
 </script>
 
 <svelte:head>
-	<title>{m.home_head_title()}</title>
+	<title>{m.home_head_title()} · {m.app_title()}</title>
 </svelte:head>
 
 <div class="page pt-8">

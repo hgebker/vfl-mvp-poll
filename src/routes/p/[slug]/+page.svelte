@@ -24,7 +24,7 @@
 </script>
 
 <svelte:head>
-	<title>{data.title}</title>
+	<title>{data.title} · {m.app_title()}</title>
 </svelte:head>
 
 <PublicHeader />

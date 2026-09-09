@@ -31,7 +31,7 @@
 </script>
 
 <svelte:head>
-	<title>{m.create_head_title()}</title>
+	<title>{m.create_head_title()} · {m.app_title()}</title>
 </svelte:head>
 
 <div class="page">

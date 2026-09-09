@@ -10,6 +10,10 @@
 	let passcode = $state('');
 </script>
 
+<svelte:head>
+	<title>{m.login_title()} · {m.app_title()}</title>
+</svelte:head>
+
 <div class="page justify-center">
 	<div class="flex flex-col items-center gap-1 text-center">
 		<h1 class="font-display text-3xl">{m.login_title()}</h1>
