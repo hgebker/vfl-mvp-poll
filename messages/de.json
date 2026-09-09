@@ -23,6 +23,8 @@
 	"home_create_poll_desc": "Richte eine neue MVP-Abstimmung für deine Spieler ein.",
 	"home_manage_players_title": "Spieler verwalten",
 	"home_manage_players_desc": "Füge Spieler hinzu, bearbeite sie oder entferne sie aus der Abstimmung.",
+	"home_view_latest_poll_title": "Letzte Umfrage ansehen",
+	"home_view_latest_poll_desc": "Prüfe die Stimmen oder verwalte deine letzte Umfrage.",
 
 	"create_head_title": "Neue Umfrage",
 	"create_title": "Neue Umfrage",

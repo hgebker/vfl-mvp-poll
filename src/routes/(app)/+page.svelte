@@ -3,10 +3,16 @@
 	import * as Item from '$lib/components/ui/item/index.js';
 	import PlusIcon from '@lucide/svelte/icons/plus';
 	import UsersIcon from '@lucide/svelte/icons/users';
+	import BarChartIcon from '@lucide/svelte/icons/bar-chart';
 	import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
 	import * as m from '$lib/paraglide/messages';
+	import type { PageProps } from './$types';
 
-	const links = [
+	let { data }: PageProps = $props();
+
+	const latestPoll = $derived(data.polls.at(-1));
+
+	const links = $derived([
 		{
 			href: resolve('/(app)/create'),
 			icon: PlusIcon,
@@ -18,8 +24,18 @@
 			icon: UsersIcon,
 			title: m.home_manage_players_title(),
 			description: m.home_manage_players_desc()
-		}
-	];
+		},
+		...(latestPoll
+			? [
+					{
+						href: resolve('/(app)/p/[slug]/manage', { slug: latestPoll.slug }),
+						icon: BarChartIcon,
+						title: m.home_view_latest_poll_title(),
+						description: m.home_view_latest_poll_desc()
+					}
+				]
+			: [])
+	]);
 </script>
 
 <svelte:head>

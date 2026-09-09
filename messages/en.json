@@ -23,6 +23,8 @@
 	"home_create_poll_desc": "Set up a new MVP vote for your players.",
 	"home_manage_players_title": "Manage players",
 	"home_manage_players_desc": "Add, edit, or remove the players who can be voted for.",
+	"home_view_latest_poll_title": "View latest poll",
+	"home_view_latest_poll_desc": "Check on votes or manage your most recent poll.",
 
 	"create_head_title": "New poll",
 	"create_title": "New poll",
