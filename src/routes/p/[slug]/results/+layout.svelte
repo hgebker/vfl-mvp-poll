@@ -7,7 +7,7 @@
 </script>
 
 {#if data.teamId}
-	<AppShell polls={data.polls}>
+	<AppShell polls={data.polls} teams={data.teams} activeTeamId={data.teamId}>
 		{@render children()}
 	</AppShell>
 {:else}
