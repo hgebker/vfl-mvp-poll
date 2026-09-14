@@ -85,6 +85,11 @@
 	"manage_delete_confirm_desc": "This permanently deletes \"{title}\" and all votes cast for it. This action cannot be undone.",
 	"manage_cancel": "Cancel",
 
+	"team_switcher_teams_label": "Teams",
+	"team_switcher_add_team": "Add team",
+	"team_switcher_logout": "Log out",
+	"team_switcher_logout_all": "Log out of all teams",
+
 	"login_title": "Team sign-in",
 	"login_subtitle": "Enter the team passcode to create or manage a match poll.",
 	"login_passcode_label": "Passcode",

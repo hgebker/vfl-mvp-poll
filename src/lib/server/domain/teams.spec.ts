@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createTeam, findTeamByPasscode } from './teams';
+import { createTeam, findTeamByPasscode, getTeamsByIds } from './teams';
 import { createTestDb } from './__test__/test-db';
 
 describe('createTeam', () => {
@@ -23,7 +23,7 @@ describe('createTeam', () => {
 });
 
 describe('findTeamByPasscode', () => {
-	it('given multiple teams, when finding by one team\'s passcode, then that team is returned', async () => {
+	it("given multiple teams, when finding by one team's passcode, then that team is returned", async () => {
 		const db = createTestDb();
 		await createTeam(db, 'Team A', 'passcode-a');
 		const teamB = await createTeam(db, 'Team B', 'passcode-b');
@@ -40,5 +40,24 @@ describe('findTeamByPasscode', () => {
 		const found = await findTeamByPasscode(db, 'wrong-passcode');
 
 		expect(found).toBeNull();
+	});
+});
+
+describe('getTeamsByIds', () => {
+	it('given a list of team ids, when fetching them, then only the matching teams are returned', async () => {
+		const db = createTestDb();
+		const teamA = await createTeam(db, 'Team A', 'passcode-a');
+		await createTeam(db, 'Team B', 'passcode-b');
+		const teamC = await createTeam(db, 'Team C', 'passcode-c');
+
+		const found = await getTeamsByIds(db, [teamA.id, teamC.id]);
+
+		expect(found.map((team) => team.id).sort()).toEqual([teamA.id, teamC.id].sort());
+	});
+
+	it('given an empty list of ids, when fetching teams, then an empty array is returned', () => {
+		const db = createTestDb();
+
+		expect(getTeamsByIds(db, [])).toEqual([]);
 	});
 });

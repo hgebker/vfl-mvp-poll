@@ -8,6 +8,8 @@ declare global {
 		interface Locals {
 			/** Set by hooks.server.ts when a valid team-member session cookie is present. */
 			teamId: string | null;
+			/** All team ids the current session is logged into (empty when signed out). */
+			teamIds: string[];
 		}
 		// interface PageData {}
 		// interface PageState {}

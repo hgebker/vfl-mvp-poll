@@ -30,7 +30,10 @@ export const load: PageServerLoad = ({ params }) => {
 		};
 	} catch (err) {
 		if (err instanceof ResultsNotAvailableError) {
-			throw error(403, { message: resultsNotAvailableMessages[err.reason](), title: pollTitle(poll) });
+			throw error(403, {
+				message: resultsNotAvailableMessages[err.reason](),
+				title: pollTitle(poll)
+			});
 		}
 		throw err;
 	}

@@ -66,7 +66,9 @@
 									)}
 								>
 									<CalendarIcon />
-									{matchDate ? df.format(matchDate.toDate(getLocalTimeZone())) : m.create_pick_date()}
+									{matchDate
+										? df.format(matchDate.toDate(getLocalTimeZone()))
+										: m.create_pick_date()}
 								</Button>
 							{/snippet}
 						</Popover.Trigger>

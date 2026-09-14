@@ -47,7 +47,9 @@
 				{/if}
 			</div>
 			<p class="text-lg font-semibold">
-				{isHidden ? m.results_head_error_not_available_title() : m.results_head_error_generic_title()}
+				{isHidden
+					? m.results_head_error_not_available_title()
+					: m.results_head_error_generic_title()}
 			</p>
 			<p class="text-muted-foreground">{page.error?.message}</p>
 			{#if !isNotFound}

@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 import { verify } from '@node-rs/argon2';
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import * as schema from '../db/schema';
@@ -13,6 +13,12 @@ export async function findTeamByPasscode(db: Db, passcode: string) {
 		if (await verify(team.passcodeHash, passcode)) return team;
 	}
 	return null;
+}
+
+/** Looks up teams by id, e.g. to render the set of teams a session is logged into. */
+export function getTeamsByIds(db: Db, teamIds: string[]) {
+	if (teamIds.length === 0) return [];
+	return db.select().from(schema.teams).where(inArray(schema.teams.id, teamIds)).all();
 }
 
 export function slugify(value: string): string {

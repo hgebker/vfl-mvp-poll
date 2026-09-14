@@ -1,27 +1,33 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 
 const SESSION_COOKIE_NAME = 'session';
-const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 30; // 30 days — team members, not per-request re-auth
+const SESSION_TTL_MS = 1000 * 60 * 60 * 24; // 24 hours
 
 export interface SessionPayload {
-	teamId: string;
+	teamIds: string[];
+	activeTeamId: string;
 	expiresAt: number;
 }
 
-/** Signs a `teamId` + expiry into an opaque cookie value (payload.signature, base64url). */
-export function signSession(secret: string, teamId: string, now = Date.now()): string {
-	const payload: SessionPayload = { teamId, expiresAt: now + SESSION_TTL_MS };
+/** Signs a set of team ids + the active one + expiry into an opaque cookie value (payload.signature, base64url). */
+export function signSession(
+	secret: string,
+	teamIds: string[],
+	activeTeamId: string,
+	now = Date.now()
+): string {
+	const payload: SessionPayload = { teamIds, activeTeamId, expiresAt: now + SESSION_TTL_MS };
 	const encoded = base64url(JSON.stringify(payload));
 	const signature = sign(secret, encoded);
 	return `${encoded}.${signature}`;
 }
 
-/** Verifies signature + expiry, returning the teamId or null if invalid/expired/tampered. */
+/** Verifies signature + expiry, returning the session payload or null if invalid/expired/tampered. */
 export function verifySession(
 	secret: string,
 	cookieValue: string,
 	now = Date.now()
-): string | null {
+): SessionPayload | null {
 	const [encoded, signature] = cookieValue.split('.');
 	if (!encoded || !signature) return null;
 
@@ -35,10 +41,18 @@ export function verifySession(
 		return null;
 	}
 
-	if (typeof payload.teamId !== 'string' || typeof payload.expiresAt !== 'number') return null;
+	if (
+		!Array.isArray(payload.teamIds) ||
+		!payload.teamIds.every((id) => typeof id === 'string') ||
+		typeof payload.activeTeamId !== 'string' ||
+		typeof payload.expiresAt !== 'number'
+	) {
+		return null;
+	}
+	if (!payload.teamIds.includes(payload.activeTeamId)) return null;
 	if (payload.expiresAt < now) return null;
 
-	return payload.teamId;
+	return payload;
 }
 
 export { SESSION_COOKIE_NAME };

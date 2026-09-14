@@ -45,7 +45,9 @@
 					{#if player.votes !== undefined}
 						<Badge variant="secondary">
 							{player.votes}
-							{player.votes === 1 ? m.selected_players_vote_singular() : m.selected_players_vote_plural()}
+							{player.votes === 1
+								? m.selected_players_vote_singular()
+								: m.selected_players_vote_plural()}
 						</Badge>
 					{/if}
 				</li>

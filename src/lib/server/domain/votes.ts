@@ -5,11 +5,7 @@ import * as schema from '../db/schema';
 type Db = BetterSQLite3Database<typeof schema>;
 
 export type VoteRejectedReason =
-	| 'poll_not_found'
-	| 'poll_not_open'
-	| 'invalid_picks'
-	| 'not_on_roster'
-	| 'already_voted';
+	'poll_not_found' | 'poll_not_open' | 'invalid_picks' | 'not_on_roster' | 'already_voted';
 
 export class VoteRejectedError extends Error {
 	constructor(public reason: VoteRejectedReason) {

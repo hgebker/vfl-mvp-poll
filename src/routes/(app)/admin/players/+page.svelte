@@ -112,7 +112,12 @@
 					<AlertDialog>
 						<AlertDialogTrigger>
 							{#snippet child({ props })}
-								<Button {...props} variant="ghost" size="icon" aria-label={m.players_delete_aria_label()}>
+								<Button
+									{...props}
+									variant="ghost"
+									size="icon"
+									aria-label={m.players_delete_aria_label()}
+								>
 									<Trash2Icon class="size-4" />
 								</Button>
 							{/snippet}

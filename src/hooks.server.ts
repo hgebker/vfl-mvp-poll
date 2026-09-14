@@ -9,8 +9,10 @@ const originalHandle: Handle = async ({ event, resolve }) => {
 	if (!env.SESSION_SECRET) throw new Error('SESSION_SECRET is not set');
 
 	const cookieValue = event.cookies.get(SESSION_COOKIE_NAME);
+	const session = cookieValue ? verifySession(env.SESSION_SECRET, cookieValue) : null;
 
-	event.locals.teamId = cookieValue ? verifySession(env.SESSION_SECRET, cookieValue) : null;
+	event.locals.teamId = session?.activeTeamId ?? null;
+	event.locals.teamIds = session?.teamIds ?? [];
 
 	return resolve(event);
 };

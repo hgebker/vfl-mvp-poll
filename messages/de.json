@@ -85,6 +85,11 @@
 	"manage_delete_confirm_desc": "Dies löscht \"{title}\" und alle dafür abgegebenen Stimmen endgültig. Diese Aktion kann nicht widerrufen werden.",
 	"manage_cancel": "Abbrechen",
 
+	"team_switcher_teams_label": "Teams",
+	"team_switcher_add_team": "Team hinzufügen",
+	"team_switcher_logout": "Abmelden",
+	"team_switcher_logout_all": "Von allen Teams abmelden",
+
 	"login_title": "Team-Anmeldung",
 	"login_subtitle": "Gib den Team-Zugangscode ein, um eine Spieltagsumfrage zu erstellen oder zu verwalten.",
 	"login_passcode_label": "Zugangscode",

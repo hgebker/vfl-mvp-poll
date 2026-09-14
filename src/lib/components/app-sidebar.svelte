@@ -2,14 +2,20 @@
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
+	import TeamSwitcher from '$lib/components/team-switcher.svelte';
 	import Plus from '@lucide/svelte/icons/plus';
 	import Users from '@lucide/svelte/icons/users';
 	import House from '@lucide/svelte/icons/house';
 	import * as m from '$lib/paraglide/messages';
 
 	type PollLink = { slug: string; title: string; status: string };
+	type Team = { id: string; name: string };
 
-	let { polls = [] }: { polls?: PollLink[] } = $props();
+	let {
+		polls = [],
+		teams = [],
+		activeTeamId
+	}: { polls?: PollLink[]; teams?: Team[]; activeTeamId?: string } = $props();
 
 	const sidebar = Sidebar.useSidebar();
 
@@ -26,10 +32,14 @@
 
 <Sidebar.Root>
 	<Sidebar.Header>
-		<div class="flex items-center gap-2 px-2 py-1.5">
-			<img src="/favicon.svg" alt="" class="size-7 shrink-0" />
-			<span class="font-display text-base font-semibold">{m.app_title()}</span>
-		</div>
+		{#if teams.length > 0 && activeTeamId}
+			<TeamSwitcher {teams} {activeTeamId} />
+		{:else}
+			<div class="flex items-center gap-2 px-2 py-1.5">
+				<img src="/favicon.svg" alt="" class="size-7 shrink-0" />
+				<span class="font-display text-base font-semibold">{m.app_title()}</span>
+			</div>
+		{/if}
 	</Sidebar.Header>
 
 	<Sidebar.Content class="gap-4">

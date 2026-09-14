@@ -9,13 +9,23 @@
 	import * as m from '$lib/paraglide/messages';
 
 	type PollLink = { slug: string; title: string; status: string };
+	type Team = { id: string; name: string };
 
-	let { polls = [], children }: { polls?: PollLink[]; children: import('svelte').Snippet } =
-		$props();
+	let {
+		polls = [],
+		teams = [],
+		activeTeamId,
+		children
+	}: {
+		polls?: PollLink[];
+		teams?: Team[];
+		activeTeamId?: string;
+		children: import('svelte').Snippet;
+	} = $props();
 </script>
 
 <Sidebar.Provider>
-	<AppSidebar {polls} />
+	<AppSidebar {polls} {teams} {activeTeamId} />
 
 	<Sidebar.Inset>
 		<header class="flex h-14 shrink-0 items-center gap-2">

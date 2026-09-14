@@ -1,6 +1,7 @@
 import type { LayoutServerLoad } from './$types';
 import { db } from '$lib/server/db';
 import { listPollsForTeam, pollTitle } from '$lib/server/domain/polls';
+import { getTeamsByIds } from '$lib/server/domain/teams';
 import { redirect } from '@sveltejs/kit';
 
 export const load: LayoutServerLoad = ({ locals, request }) => {
@@ -15,5 +16,10 @@ export const load: LayoutServerLoad = ({ locals, request }) => {
 		status: poll.status
 	}));
 
-	return { teamId, polls };
+	const teams = getTeamsByIds(db, locals.teamIds).map((team) => ({
+		id: team.id,
+		name: team.name
+	}));
+
+	return { teamId, polls, teams };
 };
