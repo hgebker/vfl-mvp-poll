@@ -1,8 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { db } from '$lib/server/db';
-import { getOnlyTeam } from '$lib/server/domain/teams';
-import { verifyPasscode } from '$lib/server/domain/passcode';
+import { findTeamByPasscode } from '$lib/server/domain/teams';
 import { setSessionCookie } from '$lib/server/auth';
 import * as m from '$lib/paraglide/messages';
 
@@ -18,9 +17,8 @@ export const actions: Actions = {
 		const passcode = String(form.get('passcode') ?? '');
 		if (!passcode) return fail(400, { error: m.login_error_passcode_required() });
 
-		const team = getOnlyTeam(db);
-		const valid = await verifyPasscode(db, team.id, passcode);
-		if (!valid) return fail(400, { error: m.login_error_wrong_passcode() });
+		const team = await findTeamByPasscode(db, passcode);
+		if (!team) return fail(400, { error: m.login_error_wrong_passcode() });
 
 		setSessionCookie(cookies, team.id);
 		const redirectTo = url.searchParams.get('redirectTo') ?? '/';

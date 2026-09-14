@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createTeam } from './teams';
+import { createTeam, findTeamByPasscode } from './teams';
 import { createTestDb } from './__test__/test-db';
 
 describe('createTeam', () => {
@@ -19,5 +19,26 @@ describe('createTeam', () => {
 
 		expect(second.id).toBe(first.id);
 		expect(second.passcodeHash).toBe(first.passcodeHash);
+	});
+});
+
+describe('findTeamByPasscode', () => {
+	it('given multiple teams, when finding by one team\'s passcode, then that team is returned', async () => {
+		const db = createTestDb();
+		await createTeam(db, 'Team A', 'passcode-a');
+		const teamB = await createTeam(db, 'Team B', 'passcode-b');
+
+		const found = await findTeamByPasscode(db, 'passcode-b');
+
+		expect(found?.id).toBe(teamB.id);
+	});
+
+	it('given no team has a matching passcode, when finding by passcode, then null is returned', async () => {
+		const db = createTestDb();
+		await createTeam(db, 'Team A', 'passcode-a');
+
+		const found = await findTeamByPasscode(db, 'wrong-passcode');
+
+		expect(found).toBeNull();
 	});
 });

@@ -7,10 +7,10 @@ import { InvalidTransitionError, transition } from '$lib/server/domain/status';
 import type { PollStatus } from '$lib/server/db/schema';
 
 export const load: PageServerLoad = ({ params, locals, url }) => {
-	requireTeam(locals, url.pathname);
+	const teamId = requireTeam(locals, url.pathname);
 
 	const poll = getPollBySlug(db, params.slug);
-	if (!poll) throw error(404, 'Poll not found');
+	if (!poll || poll.teamId !== teamId) throw error(404, 'Poll not found');
 
 	return {
 		slug: poll.slug,
@@ -23,10 +23,10 @@ export const load: PageServerLoad = ({ params, locals, url }) => {
 
 export const actions: Actions = {
 	transition: async ({ params, locals, url, request }) => {
-		requireTeam(locals, url.pathname);
+		const teamId = requireTeam(locals, url.pathname);
 
 		const poll = getPollBySlug(db, params.slug);
-		if (!poll) throw error(404, 'Poll not found');
+		if (!poll || poll.teamId !== teamId) throw error(404, 'Poll not found');
 
 		const form = await request.formData();
 		const next = String(form.get('next') ?? '') as PollStatus;
