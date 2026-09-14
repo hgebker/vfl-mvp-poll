@@ -1,26 +1,37 @@
-# sv
+# VFL MVP Polls
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
-
-```sh
-# recreate this project
-npx sv@0.17.0 create --template minimal --types ts --add drizzle="database:sqlite+sqlite:better-sqlite3" --install npm mvp-vote
-```
+A SvelteKit app for voting on MVPs.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Install dependencies:
+
+```sh
+npm install
+```
+
+Copy `.env.example` to `.env` and fill in the values:
+
+```sh
+cp .env.example .env
+```
+
+- `DATABASE_URL` — path to the local sqlite file (e.g. `local.db`)
+- `SESSION_SECRET` — signing secret for session cookies, generate with `openssl rand -hex 32`
+
+Push the schema to your local database:
+
+```sh
+npm run db:push
+```
+
+Seed a team to sign in with:
+
+```sh
+TEAM_NAME="Your Team" TEAM_PASSCODE="your-passcode" npm run db:seed
+```
+
+Start the dev server:
 
 ```sh
 npm run dev
@@ -29,14 +40,45 @@ npm run dev
 npm run dev -- --open
 ```
 
-## Building
+## Deploying
 
-To create a production version of your app:
+Pushes to `main` and version tags (`x.y.z`) build and publish two Docker images:
+
+- `hgebker/vfl-mvp-polls` — the app
+- `hgebker/vfl-mvp-polls:migrator` — runs `drizzle-kit migrate`
+
+### 1. Migrate
 
 ```sh
-npm run build
+docker run --rm \
+  -e DATABASE_URL=/data/prod.db \
+  -v prod-data:/data \
+  hgebker/vfl-mvp-polls:migrator
 ```
 
-You can preview the production build with `npm run preview`.
+### 2. Seed
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Seeds the single team this app runs for. Safe to re-run — it skips if the team already exists.
+
+```sh
+docker run --rm \
+  -e DATABASE_URL=/data/prod.db \
+  -e TEAM_NAME="Your Team" \
+  -e TEAM_PASSCODE="a real passcode" \
+  -v prod-data:/data \
+  --entrypoint npx \
+  hgebker/vfl-mvp-polls:migrator tsx src/lib/server/db/seed.ts
+```
+
+### 3. Run
+
+```sh
+docker run -d \
+  -e DATABASE_URL=/data/prod.db \
+  -e SESSION_SECRET=<generated secret> \
+  -p 3000:3000 \
+  -v prod-data:/data \
+  hgebker/vfl-mvp-polls:<tag>
+```
+
+Use the same persistent volume for all three steps — the sqlite database must survive container restarts.

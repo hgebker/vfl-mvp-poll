@@ -1,9 +1,8 @@
 import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
-import { eq } from 'drizzle-orm';
 import * as schema from './schema';
-import { hashPasscode } from '../domain/passcode';
+import { createTeam } from '../domain/teams';
 
 /**
  * Seeds the single team this v1 deployment runs for (see plan: schema is
@@ -23,26 +22,9 @@ async function main() {
 	const client = new Database(databaseUrl);
 	const db = drizzle(client, { schema });
 
-	const slug = slugify(teamName);
-	const existing = db.select().from(schema.teams).where(eq(schema.teams.slug, slug)).get();
-	if (existing) {
-		console.log(`Team "${teamName}" already exists (id: ${existing.id}) — skipping.`);
-		return;
-	}
+	const team = await createTeam(db, teamName, passcode);
 
-	const passcodeHash = await hashPasscode(passcode);
-	const team = { id: crypto.randomUUID(), name: teamName, slug, passcodeHash };
-	db.insert(schema.teams).values(team).run();
-
-	console.log(`Seeded team "${teamName}" (id: ${team.id}).`);
-}
-
-function slugify(value: string): string {
-	return value
-		.toLowerCase()
-		.trim()
-		.replace(/[^a-z0-9]+/g, '-')
-		.replace(/(^-|-$)/g, '');
+	console.log(`Seeded team "${team.name}" (id: ${team.id}).`);
 }
 
 main().catch((error) => {

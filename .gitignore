@@ -26,3 +26,6 @@ vite.config.ts.timestamp-*
 # Paraglide
 src/lib/paraglide
 project.inlang/cache/
+
+# Local API reference (not committed)
+/openapi.yaml
