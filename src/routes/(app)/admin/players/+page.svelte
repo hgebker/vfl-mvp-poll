@@ -42,12 +42,15 @@
 	let editLastName = $state('');
 	let editJerseyNumber = $state('');
 
+	let lastAction = $state<'create' | 'update' | null>(null);
+
 	function openEditSheet(player: Player) {
 		editingPlayer = player;
 		editFirstName = player.firstName;
 		editLastName = player.lastName;
 		editJerseyNumber = String(player.jerseyNumber);
 		editSheetOpen = true;
+		lastAction = null;
 	}
 </script>
 
@@ -62,7 +65,17 @@
 
 	<Card>
 		<CardContent>
-			<form method="POST" action="?/create" use:enhance class="flex flex-col gap-4">
+			<form
+				method="POST"
+				action="?/create"
+				use:enhance={() => {
+					lastAction = 'create';
+					return async ({ update }) => {
+						await update();
+					};
+				}}
+				class="flex flex-col gap-4"
+			>
 				<div class="flex flex-col gap-2">
 					<Label for="firstName">{m.players_first_name_label()}</Label>
 					<Input id="firstName" name="firstName" bind:value={firstName} required />
@@ -83,7 +96,7 @@
 						required
 					/>
 				</div>
-				{#if form?.error}
+				{#if form?.error && lastAction === 'create'}
 					<p class="text-destructive text-center font-medium">{form.error}</p>
 				{/if}
 				<Button type="submit" size="lg">{m.players_add_submit()}</Button>
@@ -171,6 +184,7 @@
 				method="POST"
 				action="?/update"
 				use:enhance={() => {
+					lastAction = 'update';
 					return async ({ update, result }) => {
 						await update();
 						if (result.type !== 'failure') {
@@ -201,7 +215,7 @@
 						required
 					/>
 				</div>
-				{#if form?.error}
+				{#if form?.error && lastAction === 'update'}
 					<p class="text-destructive text-center font-medium">{form.error}</p>
 				{/if}
 				<SheetFooter>
