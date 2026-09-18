@@ -89,10 +89,7 @@
 									{...props}
 									variant="outline"
 									size="lg"
-									class={cn(
-										'justify-start text-left font-normal',
-										!matchDate && 'text-muted-foreground'
-									)}
+									class={cn('justify-start text-left', !matchDate && 'text-muted-foreground')}
 								>
 									<CalendarIcon />
 									{matchDate
