@@ -15,7 +15,12 @@
 	import * as Popover from '$lib/components/ui/popover/index.js';
 	import { RadioGroup, RadioGroupItem } from '$lib/components/ui/radio-group/index.js';
 	import { cn } from '$lib/utils.js';
-	import { DateFormatter, getLocalTimeZone, type DateValue } from '@internationalized/date';
+	import {
+		DateFormatter,
+		getLocalTimeZone,
+		today,
+		type DateValue
+	} from '@internationalized/date';
 	import CalendarIcon from '@lucide/svelte/icons/calendar';
 	import { getLocale } from '$lib/paraglide/runtime';
 	import * as m from '$lib/paraglide/messages';
@@ -26,7 +31,7 @@
 	const df = new DateFormatter(getLocale(), { dateStyle: 'long' });
 
 	let opponent = $state('');
-	let matchDate = $state<DateValue | undefined>(undefined);
+	let matchDate = $state<DateValue | undefined>(today(getLocalTimeZone()));
 	let homeAway = $state('home');
 	let selectedPlayerIds = $state<string[]>(data.players.map((p) => p.id));
 
@@ -73,6 +78,7 @@
 								<Button
 									{...props}
 									variant="outline"
+									size="lg"
 									class={cn(
 										'justify-start text-left font-normal',
 										!matchDate && 'text-muted-foreground'

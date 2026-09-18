@@ -132,10 +132,10 @@
 								</AlertDialogDescription>
 							</AlertDialogHeader>
 							<AlertDialogFooter>
-								<AlertDialogCancel>{m.players_cancel()}</AlertDialogCancel>
+								<AlertDialogCancel size="lg">{m.players_cancel()}</AlertDialogCancel>
 								<form method="POST" action="?/delete" use:enhance class="w-full sm:w-auto">
 									<input type="hidden" name="playerId" value={player.id} />
-									<AlertDialogAction type="submit" variant="destructive" class="w-full">
+									<AlertDialogAction type="submit" variant="destructive" size="lg" class="w-full">
 										{m.players_delete_submit()}
 									</AlertDialogAction>
 								</form>

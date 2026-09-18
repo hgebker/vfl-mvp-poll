@@ -167,9 +167,9 @@
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel>{m.manage_cancel()}</AlertDialogCancel>
+						<AlertDialogCancel size="lg">{m.manage_cancel()}</AlertDialogCancel>
 						<form method="POST" action="?/delete" class="w-full sm:w-auto">
-							<AlertDialogAction type="submit" variant="destructive" class="w-full"
+							<AlertDialogAction type="submit" variant="destructive" size="lg" class="w-full"
 								>{m.manage_delete_poll()}</AlertDialogAction
 							>
 						</form>
