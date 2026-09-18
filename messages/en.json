@@ -38,6 +38,8 @@
 	"create_away": "Away",
 	"create_roster_title": "Match Roster",
 	"create_roster_desc": "Pick who's votable — visitors will choose two of these players as MVP.",
+	"create_select_all": "Select all",
+	"create_deselect_all": "Deselect all",
 	"create_no_players_before_link": "No active players yet. Add some in",
 	"create_no_players_link": "player admin",
 	"create_no_players_after_link": "first.",

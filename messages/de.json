@@ -38,6 +38,8 @@
 	"create_away": "Auswärts",
 	"create_roster_title": "Spielerkader",
 	"create_roster_desc": "Wähle, wer wählbar ist — Besucher wählen zwei dieser Spieler als MVP.",
+	"create_select_all": "Alle auswählen",
+	"create_deselect_all": "Alle abwählen",
 	"create_no_players_before_link": "Noch keine aktiven Spieler. Füge welche in der",
 	"create_no_players_link": "Spielerverwaltung",
 	"create_no_players_after_link": "hinzu.",

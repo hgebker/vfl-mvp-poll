@@ -28,6 +28,19 @@
 	let opponent = $state('');
 	let matchDate = $state<DateValue | undefined>(undefined);
 	let homeAway = $state('home');
+	let selectedPlayerIds = $state<string[]>(data.players.map((p) => p.id));
+
+	function togglePlayer(playerId: string, checked: boolean) {
+		selectedPlayerIds = checked
+			? [...selectedPlayerIds, playerId]
+			: selectedPlayerIds.filter((id) => id !== playerId);
+	}
+	function selectAll() {
+		selectedPlayerIds = data.players.map((p) => p.id);
+	}
+	function deselectAll() {
+		selectedPlayerIds = [];
+	}
 </script>
 
 <svelte:head>
@@ -117,12 +130,41 @@
 					</p>
 				{/if}
 
+				{#if data.players.length > 0}
+					<div class="mb-2 flex gap-2">
+						<Button
+							type="button"
+							variant="outline"
+							size="lg"
+							class="flex-1"
+							onclick={selectAll}
+						>
+							{m.create_select_all()}
+						</Button>
+						<Button
+							type="button"
+							variant="outline"
+							size="lg"
+							class="flex-1"
+							onclick={deselectAll}
+						>
+							{m.create_deselect_all()}
+						</Button>
+					</div>
+				{/if}
+
 				<div class="flex flex-col gap-2">
 					{#each data.players as player (player.id)}
+						{@const isSelected = selectedPlayerIds.includes(player.id)}
 						<Label
 							class="border-border has-[[data-state=checked]]:border-primary flex items-center gap-3 rounded-2xl border-2 px-4 py-3 font-medium"
 						>
-							<Checkbox name="rosterPlayerIds" value={player.id} />
+							<Checkbox
+								name="rosterPlayerIds"
+								value={player.id}
+								checked={isSelected}
+								onCheckedChange={(checked) => togglePlayer(player.id, checked === true)}
+							/>
 							#{player.jerseyNumber}
 							{player.firstName}
 							{player.lastName}
