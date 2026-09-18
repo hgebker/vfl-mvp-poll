@@ -73,10 +73,20 @@
 				<p class="text-destructive text-center font-medium">{form.error}</p>
 			{/if}
 			{#if data.status === 'upcoming'}
-				<form method="POST" action="?/transition">
-					<input type="hidden" name="next" value="open" />
-					<Button type="submit" size="lg" class="w-full">{m.manage_open_voting()}</Button>
-				</form>
+				<div class="flex flex-col gap-2">
+					<form method="POST" action="?/transition">
+						<input type="hidden" name="next" value="open" />
+						<Button type="submit" size="lg" class="w-full">{m.manage_open_voting()}</Button>
+					</form>
+					<Button
+						href={resolve('/(app)/p/[slug]/edit', { slug: data.slug })}
+						variant="secondary"
+						size="lg"
+						class="w-full"
+					>
+						{m.manage_edit_details()}
+					</Button>
+				</div>
 			{:else if data.status === 'open'}
 				<div class="flex flex-col gap-2">
 					<Button

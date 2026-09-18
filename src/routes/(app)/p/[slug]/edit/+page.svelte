@@ -19,7 +19,7 @@
 	import {
 		DateFormatter,
 		getLocalTimeZone,
-		today,
+		parseDate,
 		type DateValue
 	} from '@internationalized/date';
 	import CalendarIcon from '@lucide/svelte/icons/calendar';
@@ -31,10 +31,19 @@
 
 	const df = new DateFormatter(getLocale(), { dateStyle: 'long' });
 
-	let opponent = $state('');
-	let matchDate = $state<DateValue | undefined>(today(getLocalTimeZone()));
-	let homeAway = $state('home');
-	let selectedPlayerIds = $state<string[]>(data.players.map((p) => p.id));
+	function toLocalIsoDate(date: Date): string {
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	}
+
+	let opponent = $state(data.opponent);
+	let matchDate = $state<DateValue | undefined>(
+		parseDate(toLocalIsoDate(new Date(data.matchDate)))
+	);
+	let homeAway = $state(data.homeAway);
+	let selectedPlayerIds = $state<string[]>([...data.rosterPlayerIds]);
 
 	function togglePlayer(playerId: string, checked: boolean) {
 		selectedPlayerIds = checked
@@ -50,12 +59,12 @@
 </script>
 
 <svelte:head>
-	<title>{m.create_head_title()} · {m.app_title()}</title>
+	<title>{m.edit_head_title()} · {m.app_title()}</title>
 </svelte:head>
 
 <div class="page">
 	<div class="flex flex-col items-center gap-2 text-center">
-		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{m.create_title()}</h3>
+		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{m.edit_title()}</h3>
 	</div>
 
 	<form method="POST" use:enhance class="flex flex-col gap-4">
@@ -139,22 +148,10 @@
 
 				{#if data.players.length > 0}
 					<div class="mb-2 flex gap-2">
-						<Button
-							type="button"
-							variant="outline"
-							size="lg"
-							class="flex-1"
-							onclick={selectAll}
-						>
+						<Button type="button" variant="outline" size="lg" class="flex-1" onclick={selectAll}>
 							{m.create_select_all()}
 						</Button>
-						<Button
-							type="button"
-							variant="outline"
-							size="lg"
-							class="flex-1"
-							onclick={deselectAll}
-						>
+						<Button type="button" variant="outline" size="lg" class="flex-1" onclick={deselectAll}>
 							{m.create_deselect_all()}
 						</Button>
 					</div>
@@ -185,6 +182,6 @@
 			<p class="text-destructive text-center font-medium">{form.error}</p>
 		{/if}
 
-		<Button type="submit" size="lg">{m.create_submit()}</Button>
+		<Button type="submit" size="lg">{m.edit_submit()}</Button>
 	</form>
 </div>

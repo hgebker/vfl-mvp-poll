@@ -38,6 +38,41 @@ export function createPoll(db: Db, teamId: string, input: CreatePollInput) {
 	return poll;
 }
 
+export interface UpdatePollInput {
+	opponent: string;
+	matchDate: Date;
+	homeAway: HomeAway;
+	rosterPlayerIds: string[];
+}
+
+export class PollNotEditableError extends Error {}
+
+export function updatePoll(db: Db, teamId: string, pollId: string, input: UpdatePollInput) {
+	if (input.rosterPlayerIds.length < 2) {
+		throw new Error('A poll needs at least two roster players to vote for');
+	}
+
+	const poll = db.select().from(schema.polls).where(eq(schema.polls.id, pollId)).get();
+	if (!poll || poll.teamId !== teamId) throw new Error(`Poll ${pollId} not found`);
+	if (poll.status !== 'upcoming') throw new PollNotEditableError('Poll is no longer editable');
+
+	db.transaction((tx) => {
+		tx.update(schema.polls)
+			.set({
+				opponent: input.opponent.trim(),
+				matchDate: input.matchDate,
+				homeAway: input.homeAway
+			})
+			.where(eq(schema.polls.id, pollId))
+			.run();
+
+		tx.delete(schema.pollPlayers).where(eq(schema.pollPlayers.pollId, pollId)).run();
+		tx.insert(schema.pollPlayers)
+			.values(input.rosterPlayerIds.map((playerId) => ({ pollId, playerId })))
+			.run();
+	});
+}
+
 export function getPollBySlug(db: Db, slug: string) {
 	return db.select().from(schema.polls).where(eq(schema.polls.slug, slug)).get();
 }

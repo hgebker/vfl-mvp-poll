@@ -22,7 +22,8 @@ export function routeTitle(routeId: RouteId): string {
 		'/p': '',
 		'/p/[slug]': m.route_vote(),
 		'/p/[slug]/results': m.route_results(),
-		'/(app)/p/[slug]/manage': m.route_manage()
+		'/(app)/p/[slug]/manage': m.route_manage(),
+		'/(app)/p/[slug]/edit': m.route_edit()
 	};
 
 	return titles[routeId];

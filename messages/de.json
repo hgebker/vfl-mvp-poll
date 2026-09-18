@@ -8,6 +8,7 @@
 	"route_vote": "Abstimmen",
 	"route_results": "Ergebnisse",
 	"route_manage": "Verwalten",
+	"route_edit": "Bearbeiten",
 
 	"app_title": "VFL MVPs",
 	"nav_home": "Start",
@@ -86,6 +87,12 @@
 	"manage_delete_confirm_title": "Diese Umfrage löschen?",
 	"manage_delete_confirm_desc": "Dies löscht \"{title}\" und alle dafür abgegebenen Stimmen endgültig. Diese Aktion kann nicht widerrufen werden.",
 	"manage_cancel": "Abbrechen",
+	"manage_edit_details": "Details bearbeiten",
+
+	"edit_head_title": "Umfrage bearbeiten",
+	"edit_title": "Umfrage bearbeiten",
+	"edit_submit": "Änderungen speichern",
+	"edit_error_not_editable": "Diese Umfrage kann nicht mehr bearbeitet werden.",
 
 	"team_switcher_teams_label": "Teams",
 	"team_switcher_add_team": "Team hinzufügen",

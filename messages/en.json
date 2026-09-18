@@ -8,6 +8,7 @@
 	"route_vote": "Vote",
 	"route_results": "Results",
 	"route_manage": "Manage",
+	"route_edit": "Edit",
 
 	"app_title": "VFL MVPs",
 	"nav_home": "Home",
@@ -86,6 +87,12 @@
 	"manage_delete_confirm_title": "Delete this poll?",
 	"manage_delete_confirm_desc": "This permanently deletes \"{title}\" and all votes cast for it. This action cannot be undone.",
 	"manage_cancel": "Cancel",
+	"manage_edit_details": "Edit details",
+
+	"edit_head_title": "Edit poll",
+	"edit_title": "Edit poll",
+	"edit_submit": "Save changes",
+	"edit_error_not_editable": "This poll can no longer be edited.",
 
 	"team_switcher_teams_label": "Teams",
 	"team_switcher_add_team": "Add team",
