@@ -182,6 +182,15 @@
 			<p class="text-destructive text-center font-medium">{form.error}</p>
 		{/if}
 
-		<Button type="submit" size="lg">{m.edit_submit()}</Button>
+		<div class="flex flex-col gap-2">
+			<Button type="submit" size="lg">{m.edit_submit()}</Button>
+			<Button
+				href={resolve('/(app)/p/[slug]/manage', { slug: data.slug })}
+				variant="outline"
+				size="lg"
+			>
+				{m.manage_cancel()}
+			</Button>
+		</div>
 	</form>
 </div>
