@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { Alert, AlertDescription } from '$lib/components/ui/alert/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Card, CardContent } from '$lib/components/ui/card/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
+	import CircleAlertIcon from '@lucide/svelte/icons/circle-alert';
 	import * as m from '$lib/paraglide/messages';
 	import type { ActionData } from './$types';
 
@@ -28,7 +30,10 @@
 					<Input id="passcode" name="passcode" type="password" bind:value={passcode} required />
 				</div>
 				{#if form?.error}
-					<p class="text-destructive text-center font-medium">{form.error}</p>
+					<Alert variant="destructive">
+						<CircleAlertIcon />
+						<AlertDescription>{form.error}</AlertDescription>
+					</Alert>
 				{/if}
 				<Button type="submit" size="lg">{m.login_submit()}</Button>
 			</form>

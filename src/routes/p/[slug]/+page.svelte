@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { Alert, AlertDescription } from '$lib/components/ui/alert/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Card, CardContent } from '$lib/components/ui/card/index.js';
 	import { Checkbox } from '$lib/components/ui/checkbox/index.js';
 	import PublicHeader from '$lib/components/public-header.svelte';
 	import CheckIcon from '@lucide/svelte/icons/check';
+	import CircleAlertIcon from '@lucide/svelte/icons/circle-alert';
 	import ClockIcon from '@lucide/svelte/icons/clock';
 	import LockIcon from '@lucide/svelte/icons/lock';
 	import * as m from '$lib/paraglide/messages';
@@ -130,7 +132,10 @@
 			</div>
 
 			{#if form?.error}
-				<p class="text-destructive text-center font-medium">{form.error}</p>
+				<Alert variant="destructive">
+					<CircleAlertIcon />
+					<AlertDescription>{form.error}</AlertDescription>
+				</Alert>
 			{/if}
 
 			<Button type="submit" size="lg" disabled={selected.length !== 2}>{m.vote_submit()}</Button>

@@ -3,6 +3,7 @@
 	import { toDataURL } from 'qrcode';
 	import { resolve } from '$app/paths';
 	import { toast } from 'svelte-sonner';
+	import { Alert, AlertDescription } from '$lib/components/ui/alert/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import {
 		Card,
@@ -27,6 +28,7 @@
 	import PollNavTabs from '$lib/components/poll-nav-tabs.svelte';
 	import CopyIcon from '@lucide/svelte/icons/copy';
 	import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
+	import CircleAlertIcon from '@lucide/svelte/icons/circle-alert';
 	import * as m from '$lib/paraglide/messages';
 	import type { ActionData, PageData } from './$types';
 
@@ -70,7 +72,10 @@
 
 		<CardContent>
 			{#if form?.error}
-				<p class="text-destructive text-center font-medium">{form.error}</p>
+				<Alert variant="destructive">
+					<CircleAlertIcon />
+					<AlertDescription>{form.error}</AlertDescription>
+				</Alert>
 			{/if}
 			{#if data.status === 'upcoming'}
 				<div class="flex flex-col gap-2">

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { resolve } from '$app/paths';
+	import { Alert, AlertDescription } from '$lib/components/ui/alert/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Calendar } from '$lib/components/ui/calendar/index.js';
 	import {
@@ -23,6 +24,7 @@
 		type DateValue
 	} from '@internationalized/date';
 	import CalendarIcon from '@lucide/svelte/icons/calendar';
+	import CircleAlertIcon from '@lucide/svelte/icons/circle-alert';
 	import { getLocale } from '$lib/paraglide/runtime';
 	import * as m from '$lib/paraglide/messages';
 	import type { ActionData, PageData } from './$types';
@@ -179,7 +181,10 @@
 		</Card>
 
 		{#if form?.error}
-			<p class="text-destructive text-center font-medium">{form.error}</p>
+			<Alert variant="destructive">
+				<CircleAlertIcon />
+				<AlertDescription>{form.error}</AlertDescription>
+			</Alert>
 		{/if}
 
 		<Button type="submit" size="lg">{m.create_submit()}</Button>

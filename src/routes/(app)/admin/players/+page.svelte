@@ -11,6 +11,7 @@
 		AlertDialogTitle,
 		AlertDialogTrigger
 	} from '$lib/components/ui/alert-dialog/index.js';
+	import { Alert, AlertDescription } from '$lib/components/ui/alert/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Card, CardContent } from '$lib/components/ui/card/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
@@ -23,6 +24,7 @@
 		SheetTitle
 	} from '$lib/components/ui/sheet/index.js';
 	import { Switch } from '$lib/components/ui/switch/index.js';
+	import CircleAlertIcon from '@lucide/svelte/icons/circle-alert';
 	import PencilIcon from '@lucide/svelte/icons/pencil';
 	import Trash2Icon from '@lucide/svelte/icons/trash-2';
 	import * as m from '$lib/paraglide/messages';
@@ -97,7 +99,10 @@
 					/>
 				</div>
 				{#if form?.error && lastAction === 'create'}
-					<p class="text-destructive text-center font-medium">{form.error}</p>
+					<Alert variant="destructive">
+						<CircleAlertIcon />
+						<AlertDescription>{form.error}</AlertDescription>
+					</Alert>
 				{/if}
 				<Button type="submit" size="lg">{m.players_add_submit()}</Button>
 			</form>
@@ -216,7 +221,10 @@
 					/>
 				</div>
 				{#if form?.error && lastAction === 'update'}
-					<p class="text-destructive text-center font-medium">{form.error}</p>
+					<Alert variant="destructive">
+						<CircleAlertIcon />
+						<AlertDescription>{form.error}</AlertDescription>
+					</Alert>
 				{/if}
 				<SheetFooter>
 					<Button type="submit" size="lg">{m.players_save_changes()}</Button>
