@@ -15,6 +15,9 @@ export const load: PageServerLoad = ({ params, locals, url }) => {
 	return {
 		slug: poll.slug,
 		title: pollTitle(poll),
+		opponent: poll.opponent,
+		homeAway: poll.homeAway,
+		matchDate: poll.matchDate,
 		status: poll.status,
 		shareUrl: `${url.origin}/p/${poll.slug}`,
 		roster: getPollRoster(db, poll.id)

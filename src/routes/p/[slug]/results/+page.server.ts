@@ -24,6 +24,10 @@ export const load: PageServerLoad = ({ params }) => {
 		const timeline = getTimeline(db, poll.id);
 		return {
 			title: pollTitle(poll),
+			opponent: poll.opponent,
+			homeAway: poll.homeAway,
+			matchDate: poll.matchDate,
+			status: poll.status,
 			results: results.map((r) => ({ ...r, name: `${r.firstName} ${r.lastName}` })),
 			timeline,
 			roster: getPollRoster(db, poll.id)
@@ -32,7 +36,13 @@ export const load: PageServerLoad = ({ params }) => {
 		if (err instanceof ResultsNotAvailableError) {
 			throw error(403, {
 				message: resultsNotAvailableMessages[err.reason](),
-				title: pollTitle(poll)
+				title: pollTitle(poll),
+				poll: {
+					opponent: poll.opponent,
+					homeAway: poll.homeAway,
+					matchDate: poll.matchDate,
+					status: poll.status
+				}
 			});
 		}
 		throw err;

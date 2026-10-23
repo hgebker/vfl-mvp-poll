@@ -12,7 +12,6 @@
 		CardTitle,
 		CardDescription
 	} from '$lib/components/ui/card/index.js';
-	import { Badge, type BadgeVariant } from '$lib/components/ui/badge/index.js';
 	import {
 		AlertDialog,
 		AlertDialogAction,
@@ -25,6 +24,7 @@
 		AlertDialogTrigger
 	} from '$lib/components/ui/alert-dialog/index.js';
 	import SelectedPlayers from '$lib/components/selected-players.svelte';
+	import PollHeader from '$lib/components/poll-header.svelte';
 	import PollNavTabs from '$lib/components/poll-nav-tabs.svelte';
 	import CopyIcon from '@lucide/svelte/icons/copy';
 	import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
@@ -45,11 +45,6 @@
 		toast.success(m.manage_link_copied());
 	}
 
-	const statusVariant: Record<string, BadgeVariant> = {
-		upcoming: 'secondary',
-		open: 'default',
-		closed: 'destructive'
-	};
 </script>
 
 <svelte:head>
@@ -57,12 +52,14 @@
 </svelte:head>
 
 <div class="page">
-	<PollNavTabs />
+	<PollHeader
+		opponent={data.opponent}
+		homeAway={data.homeAway}
+		matchDate={data.matchDate}
+		status={data.status}
+	/>
 
-	<div class="flex flex-col items-center gap-2 text-center">
-		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{data.title}</h3>
-		<Badge variant={statusVariant[data.status]}>{data.status}</Badge>
-	</div>
+	<PollNavTabs />
 
 	<Card>
 		<CardHeader>

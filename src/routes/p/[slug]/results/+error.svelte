@@ -3,6 +3,7 @@
 	import { resolve } from '$app/paths';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Card, CardContent } from '$lib/components/ui/card/index.js';
+	import PollHeader from '$lib/components/poll-header.svelte';
 	import PollNavTabs from '$lib/components/poll-nav-tabs.svelte';
 	import LockIcon from '@lucide/svelte/icons/lock';
 	import CircleAlertIcon from '@lucide/svelte/icons/circle-alert';
@@ -14,6 +15,7 @@
 	const isNotFound = $derived(page.status === 404);
 	const isAdmin = $derived(Boolean(page.data.teamId));
 	const title = $derived(page.error?.title);
+	const poll = $derived(page.error?.poll);
 </script>
 
 <svelte:head>
@@ -26,15 +28,18 @@
 </svelte:head>
 
 <div class="page">
-	{#if !isNotFound}
-		<PollNavTabs />
+	{#if poll}
+		<PollHeader
+			opponent={poll.opponent}
+			homeAway={poll.homeAway}
+			matchDate={poll.matchDate}
+			status={poll.status}
+			eyebrow={isAdmin ? undefined : m.results_title()}
+		/>
 	{/if}
 
-	{#if title}
-		<div class="flex flex-col items-center gap-2 text-center">
-			<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{title}</h3>
-			<p class="text-muted-foreground">{m.results_title()}</p>
-		</div>
+	{#if !isNotFound}
+		<PollNavTabs />
 	{/if}
 
 	<Card>

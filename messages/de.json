@@ -131,6 +131,9 @@
 
 	"poll_nav_manage": "Verwalten",
 	"poll_nav_results": "Ergebnisse",
+	"poll_status_upcoming": "Anstehend",
+	"poll_status_open": "Offen",
+	"poll_status_closed": "Geschlossen",
 
 	"selected_players_title": "Spielerkader - {count} Spieler",
 	"selected_players_desc": "Die Spieler, die in dieser Umfrage Stimmen erhalten können, sortiert nach Stimmenzahl, sobald die Abstimmung geschlossen ist.",

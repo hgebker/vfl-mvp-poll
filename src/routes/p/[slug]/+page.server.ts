@@ -23,6 +23,9 @@ export const load: PageServerLoad = ({ params, cookies }) => {
 	return {
 		slug: poll.slug,
 		title: pollTitle(poll),
+		opponent: poll.opponent,
+		homeAway: poll.homeAway,
+		matchDate: poll.matchDate,
 		status: poll.status,
 		alreadyVoted,
 		roster: poll.status === 'open' && !alreadyVoted ? getPollRoster(db, poll.id) : []

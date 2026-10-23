@@ -131,6 +131,9 @@
 
 	"poll_nav_manage": "Manage",
 	"poll_nav_results": "Results",
+	"poll_status_upcoming": "Upcoming",
+	"poll_status_open": "Open",
+	"poll_status_closed": "Closed",
 
 	"selected_players_title": "Match roster - {count} players",
 	"selected_players_desc": "The players eligible to receive votes in this poll, ranked by vote count once voting closes.",

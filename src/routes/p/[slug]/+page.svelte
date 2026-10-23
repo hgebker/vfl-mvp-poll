@@ -4,6 +4,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Card, CardContent } from '$lib/components/ui/card/index.js';
 	import { Checkbox } from '$lib/components/ui/checkbox/index.js';
+	import PollHeader from '$lib/components/poll-header.svelte';
 	import PublicHeader from '$lib/components/public-header.svelte';
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import CircleAlertIcon from '@lucide/svelte/icons/circle-alert';
@@ -32,10 +33,13 @@
 <PublicHeader />
 
 <div class="page">
-	<div class="flex flex-col items-center gap-2 text-center">
-		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{m.vote_title()}</h3>
-		<p class="text-muted-foreground">{data.title}</p>
-	</div>
+	<PollHeader
+		opponent={data.opponent}
+		homeAway={data.homeAway}
+		matchDate={data.matchDate}
+		status={data.status}
+		eyebrow={m.vote_title()}
+	/>
 
 	{#if form?.success}
 		<Card>

@@ -4,6 +4,12 @@ declare global {
 	namespace App {
 		interface Error {
 			title?: string;
+			poll?: {
+				opponent: string;
+				homeAway: 'home' | 'away';
+				matchDate: Date;
+				status: 'upcoming' | 'open' | 'closed';
+			};
 		}
 		interface Locals {
 			/** Set by hooks.server.ts when a valid team-member session cookie is present. */

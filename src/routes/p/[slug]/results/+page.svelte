@@ -3,6 +3,7 @@
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card/index.js';
 	import { ChartContainer, type ChartConfig } from '$lib/components/ui/chart/index.js';
 	import SelectedPlayers from '$lib/components/selected-players.svelte';
+	import PollHeader from '$lib/components/poll-header.svelte';
 	import PollNavTabs from '$lib/components/poll-nav-tabs.svelte';
 	import * as m from '$lib/paraglide/messages';
 	import type { PageData } from './$types';
@@ -22,12 +23,15 @@
 </svelte:head>
 
 <div class="page">
-	<PollNavTabs />
+	<PollHeader
+		opponent={data.opponent}
+		homeAway={data.homeAway}
+		matchDate={data.matchDate}
+		status={data.status}
+		eyebrow={data.teamId ? undefined : m.results_title()}
+	/>
 
-	<div class="flex flex-col items-center gap-2 text-center">
-		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{data.title}</h3>
-		<p class="text-muted-foreground">{m.results_title()}</p>
-	</div>
+	<PollNavTabs />
 
 	<Card>
 		<CardHeader>
