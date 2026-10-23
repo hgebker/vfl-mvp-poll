@@ -39,6 +39,26 @@ describe('createPoll', () => {
 	});
 });
 
+describe('getPollRoster', () => {
+	it('given players whose names and jersey numbers sort differently, when reading the roster, then it is ordered by jersey number', () => {
+		const db = createTestDb();
+		const team = seedTeam(db);
+		const zed = seedPlayer(db, team.id, { firstName: 'Zed', lastName: 'Alpha', jerseyNumber: 3 });
+		const amy = seedPlayer(db, team.id, { firstName: 'Amy', lastName: 'Zulu', jerseyNumber: 1 });
+		const bob = seedPlayer(db, team.id, { firstName: 'Bob', lastName: 'Mike', jerseyNumber: 2 });
+		const poll = createPoll(db, team.id, {
+			opponent: 'Rivals FC',
+			matchDate: new Date(),
+			homeAway: 'home',
+			rosterPlayerIds: [zed.id, amy.id, bob.id]
+		});
+
+		const roster = getPollRoster(db, poll.id);
+
+		expect(roster.map((p) => p.jerseyNumber)).toEqual([1, 2, 3]);
+	});
+});
+
 describe('deletePoll', () => {
 	it('given a poll, when deleted, then the poll row is gone', () => {
 		const db = createTestDb();

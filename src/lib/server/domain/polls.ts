@@ -88,7 +88,7 @@ export function getPollRoster(db: Db, pollId: string) {
 		.from(schema.pollPlayers)
 		.innerJoin(schema.players, eq(schema.players.id, schema.pollPlayers.playerId))
 		.where(eq(schema.pollPlayers.pollId, pollId))
-		.orderBy(schema.players.lastName, schema.players.firstName)
+		.orderBy(schema.players.jerseyNumber)
 		.all();
 }
 
