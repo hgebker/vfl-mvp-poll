@@ -13,6 +13,9 @@ export const load: LayoutServerLoad = ({ locals, request }) => {
 	const polls = listPollsForTeam(db, teamId).map((poll) => ({
 		slug: poll.slug,
 		title: pollTitle(poll),
+		opponent: poll.opponent,
+		homeAway: poll.homeAway,
+		matchDate: poll.matchDate,
 		status: poll.status
 	}));
 

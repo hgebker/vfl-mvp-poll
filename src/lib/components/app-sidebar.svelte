@@ -6,9 +6,17 @@
 	import Plus from '@lucide/svelte/icons/plus';
 	import Users from '@lucide/svelte/icons/users';
 	import House from '@lucide/svelte/icons/house';
+	import { getLocale } from '$lib/paraglide/runtime';
 	import * as m from '$lib/paraglide/messages';
 
-	type PollLink = { slug: string; title: string; status: string };
+	type PollLink = {
+		slug: string;
+		title: string;
+		opponent: string;
+		homeAway: 'home' | 'away';
+		matchDate: Date;
+		status: string;
+	};
 	type Team = { id: string; name: string };
 
 	let {
@@ -23,6 +31,13 @@
 		if (sidebar.isMobile) sidebar.setOpenMobile(false);
 	}
 
+	const formatDate = (date: Date) =>
+		new Date(date).toLocaleDateString(getLocale(), {
+			day: '2-digit',
+			month: '2-digit',
+			year: '2-digit'
+		});
+
 	const statusDot: Record<string, string> = {
 		open: 'bg-emerald-500',
 		upcoming: 'bg-muted-foreground',
@@ -31,7 +46,7 @@
 </script>
 
 <Sidebar.Root>
-	<Sidebar.Header>
+	<Sidebar.Header class="pt-4">
 		{#if teams.length > 0 && activeTeamId}
 			<TeamSwitcher {teams} {activeTeamId} />
 		{:else}
@@ -42,7 +57,7 @@
 		{/if}
 	</Sidebar.Header>
 
-	<Sidebar.Content class="gap-4">
+	<Sidebar.Content class="gap-0">
 		<Sidebar.Group>
 			<Sidebar.GroupContent>
 				<Sidebar.Menu class="gap-1.5">
@@ -89,7 +104,11 @@
 					<Sidebar.Menu class="gap-1.5">
 						{#each polls as poll (poll.slug)}
 							<Sidebar.MenuItem>
-								<Sidebar.MenuButton isActive={page.params.slug === poll.slug}>
+								<Sidebar.MenuButton
+									size="lg"
+									class="h-12"
+									isActive={page.params.slug === poll.slug}
+								>
 									{#snippet child({ props })}
 										<a
 											href={resolve('/(app)/p/[slug]/manage', { slug: poll.slug })}
@@ -103,7 +122,14 @@
 													statusDot[poll.status] ?? 'bg-muted-foreground'
 												]}
 											></span>
-											<span>{poll.title}</span>
+											<span class="grid min-w-0 flex-1 leading-tight">
+												<span class="truncate font-medium">{poll.opponent}</span>
+												<span class="text-muted-foreground truncate text-xs">
+													{poll.homeAway === 'home' ? m.create_home() : m.create_away()} · {formatDate(
+														poll.matchDate
+													)}
+												</span>
+											</span>
 										</a>
 									{/snippet}
 								</Sidebar.MenuButton>

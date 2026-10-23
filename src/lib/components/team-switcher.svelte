@@ -19,7 +19,7 @@
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger>
 				{#snippet child({ props })}
-					<Sidebar.MenuButton size="lg" {...props}>
+					<Sidebar.MenuButton size="lg" class="bg-sidebar-accent/60" {...props}>
 						<img src="/favicon.svg" alt="" class="size-8 shrink-0" />
 						<span class="grid flex-1 text-left leading-tight">
 							<span class="truncate font-semibold">{m.app_title()}</span>

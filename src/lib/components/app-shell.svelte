@@ -8,7 +8,14 @@
 	import { routeTitle } from '$lib';
 	import * as m from '$lib/paraglide/messages';
 
-	type PollLink = { slug: string; title: string; status: string };
+	type PollLink = {
+		slug: string;
+		title: string;
+		opponent: string;
+		homeAway: 'home' | 'away';
+		matchDate: Date;
+		status: string;
+	};
 	type Team = { id: string; name: string };
 
 	let {
