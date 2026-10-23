@@ -91,10 +91,10 @@
 			</CardContent>
 		</Card>
 	{:else}
+		<p class="text-muted-foreground px-1 text-center text-sm">{m.vote_description()}</p>
+
 		<div class="flex items-center justify-between px-1">
-			<p class="text-muted-foreground text-sm font-bold tracking-wide uppercase">
-				{m.vote_tap_two_players()}
-			</p>
+			<p class="text-lg font-semibold">{m.vote_tap_two_players()}</p>
 			<div class="flex gap-1.5">
 				{#each [0, 1] as i (i)}
 					<div
