@@ -17,7 +17,7 @@
 </svelte:head>
 
 <div class="page justify-center">
-	<div class="flex flex-col items-center gap-1 text-center">
+	<div class="mb-2 flex flex-col items-center gap-1 text-center">
 		<h1 class="font-display text-3xl">{m.login_title()}</h1>
 		<p class="text-muted-foreground">{m.login_subtitle()}</p>
 	</div>

@@ -65,7 +65,7 @@
 </svelte:head>
 
 <div class="page">
-	<div class="flex flex-col items-center gap-2 text-center">
+	<div class="mb-2 flex flex-col items-center gap-2 text-center">
 		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{m.edit_title()}</h3>
 	</div>
 
@@ -110,13 +110,13 @@
 					<legend class="mb-1 text-sm font-semibold">{m.create_home_or_away_label()}</legend>
 					<RadioGroup bind:value={homeAway} name="homeAway" class="grid-cols-2 gap-3!">
 						<Label
-							class="border-border has-data-[state=checked]:border-primary has-data-[state=checked]:bg-primary/10 flex items-center gap-3 rounded-2xl border-2 px-4 py-3 font-medium"
+							class="border-border has-data-[state=checked]:border-muted-foreground/40 has-data-[state=checked]:bg-muted flex items-center gap-3 rounded-2xl border-2 px-4 py-3 font-medium"
 						>
 							<RadioGroupItem value="home" />
 							{m.create_home()}
 						</Label>
 						<Label
-							class="border-border has-data-[state=checked]:border-primary has-data-[state=checked]:bg-primary/10 flex items-center gap-3 rounded-2xl border-2 px-4 py-3 font-medium"
+							class="border-border has-data-[state=checked]:border-muted-foreground/40 has-data-[state=checked]:bg-muted flex items-center gap-3 rounded-2xl border-2 px-4 py-3 font-medium"
 						>
 							<RadioGroupItem value="away" />
 							{m.create_away()}
@@ -138,7 +138,7 @@
 				{#if data.players.length === 0}
 					<p class="text-muted-foreground text-sm">
 						{m.create_no_players_before_link()}
-						<a href={resolve('/(app)/admin/players')} class="text-primary underline"
+						<a href={resolve('/(app)/admin/players')} class="text-foreground underline"
 							>{m.create_no_players_link()}</a
 						>
 						{m.create_no_players_after_link()}
@@ -160,7 +160,7 @@
 					{#each data.players as player (player.id)}
 						{@const isSelected = selectedPlayerIds.includes(player.id)}
 						<Label
-							class="border-border has-[[data-state=checked]]:border-primary flex items-center gap-3 rounded-2xl border-2 px-4 py-3 font-medium"
+							class="border-border has-[[data-state=checked]]:border-muted-foreground/40 has-[[data-state=checked]]:bg-muted flex items-center gap-3 rounded-2xl border-2 px-4 py-3 font-medium"
 						>
 							<Checkbox
 								name="rosterPlayerIds"

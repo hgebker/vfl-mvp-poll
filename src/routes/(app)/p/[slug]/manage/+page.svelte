@@ -29,6 +29,7 @@
 	import CopyIcon from '@lucide/svelte/icons/copy';
 	import QrCodeIcon from '@lucide/svelte/icons/qr-code';
 	import ShareIcon from '@lucide/svelte/icons/share-2';
+	import BarChartIcon from '@lucide/svelte/icons/bar-chart';
 	import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
 	import CircleAlertIcon from '@lucide/svelte/icons/circle-alert';
 	import * as m from '$lib/paraglide/messages';
@@ -143,15 +144,15 @@
 					</form>
 				</div>
 			{:else}
-				<p class="text-muted-foreground text-center">
-					{m.manage_voting_closed()}
-					<a
-						href={resolve('/p/[slug]/results', { slug: data.slug })}
-						class="text-primary underline"
-					>
-						{m.manage_see_results()}
-					</a>
-				</p>
+				<Button
+					href={resolve('/p/[slug]/results', { slug: data.slug })}
+					variant="secondary"
+					size="lg"
+					class="w-full"
+				>
+					<BarChartIcon class="size-4" />
+					{m.manage_see_results()}
+				</Button>
 			{/if}
 		</CardContent>
 	</Card>

@@ -6,6 +6,7 @@
 	import { Checkbox } from '$lib/components/ui/checkbox/index.js';
 	import PollHeader from '$lib/components/poll-header.svelte';
 	import PublicHeader from '$lib/components/public-header.svelte';
+	import BarChartIcon from '@lucide/svelte/icons/bar-chart';
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import CircleAlertIcon from '@lucide/svelte/icons/circle-alert';
 	import ClockIcon from '@lucide/svelte/icons/clock';
@@ -74,6 +75,7 @@
 					variant="secondary"
 					size="lg"
 				>
+					<BarChartIcon class="size-4" />
 					{m.vote_see_results()}
 				</Button>
 			</CardContent>
@@ -117,7 +119,7 @@
 					<label
 						class={[
 							'flex items-center gap-4 rounded-2xl border-2 px-5 py-4 transition-colors',
-							isSelected ? 'border-primary bg-primary/10' : 'border-border bg-card',
+							isSelected ? 'border-muted-foreground/40 bg-muted' : 'border-border bg-card',
 							isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
 						]}
 					>

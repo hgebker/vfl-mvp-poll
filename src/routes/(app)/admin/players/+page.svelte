@@ -61,7 +61,7 @@
 </svelte:head>
 
 <div class="page">
-	<div class="flex flex-col items-center gap-2 text-center">
+	<div class="mb-2 flex flex-col items-center gap-2 text-center">
 		<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight">{m.players_title()}</h3>
 	</div>
 
