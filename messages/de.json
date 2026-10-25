@@ -143,6 +143,8 @@
 
 	"selected_players_title": "Spielerkader - {count} Spieler",
 	"selected_players_desc": "Die Spieler, die in dieser Abstimmung Stimmen erhalten können, sortiert nach Stimmenzahl, sobald die Abstimmung geschlossen ist.",
+	"results_players_title": "Spieler mit Stimmen - {count}",
+	"results_players_desc": "Alle Spieler, die mindestens eine Stimme erhalten haben, sortiert nach Stimmenzahl.",
 	"selected_players_vote_singular": "Stimme",
 	"selected_players_vote_plural": "Stimmen",
 

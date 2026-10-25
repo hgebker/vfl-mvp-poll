@@ -17,7 +17,11 @@
 		votes?: number;
 	};
 
-	let { players }: { players: Player[] } = $props();
+	let {
+		players,
+		title,
+		description
+	}: { players: Player[]; title?: string; description?: string } = $props();
 
 	const showVotes = $derived(players.some((p) => p.votes !== undefined));
 	const sorted = $derived(
@@ -29,9 +33,9 @@
 
 <Card>
 	<CardHeader>
-		<CardTitle>{m.selected_players_title({ count: players.length })}</CardTitle>
+		<CardTitle>{title ?? m.selected_players_title({ count: players.length })}</CardTitle>
 		<CardDescription>
-			{m.selected_players_desc()}
+			{description ?? m.selected_players_desc()}
 		</CardDescription>
 	</CardHeader>
 

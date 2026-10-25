@@ -28,7 +28,9 @@ export const load: PageServerLoad = ({ params }) => {
 			homeAway: poll.homeAway,
 			matchDate: poll.matchDate,
 			status: poll.status,
-			results: results.map((r) => ({ ...r, name: `${r.firstName} ${r.lastName}` })),
+			results: results
+				.filter((r) => r.votes > 0)
+				.map((r) => ({ ...r, name: `${r.firstName} ${r.lastName}` })),
 			timeline,
 			roster: getPollRoster(db, poll.id)
 		};

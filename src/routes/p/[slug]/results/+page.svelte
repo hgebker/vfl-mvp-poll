@@ -69,6 +69,8 @@
 	</Card>
 
 	<SelectedPlayers
+		title={m.results_players_title({ count: data.results.length })}
+		description={m.results_players_desc()}
 		players={data.results.map((r) => ({
 			id: r.playerId,
 			firstName: r.firstName,

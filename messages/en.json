@@ -143,6 +143,8 @@
 
 	"selected_players_title": "Match roster - {count} players",
 	"selected_players_desc": "The players eligible to receive votes in this poll, ranked by vote count once voting closes.",
+	"results_players_title": "Players with votes - {count}",
+	"results_players_desc": "All players who received at least one vote, ranked by vote count.",
 	"selected_players_vote_singular": "vote",
 	"selected_players_vote_plural": "votes",
 
