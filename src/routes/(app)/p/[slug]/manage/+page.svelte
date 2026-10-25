@@ -27,7 +27,6 @@
 	import PollHeader from '$lib/components/poll-header.svelte';
 	import PollNavTabs from '$lib/components/poll-nav-tabs.svelte';
 	import CopyIcon from '@lucide/svelte/icons/copy';
-	import QrCodeIcon from '@lucide/svelte/icons/qr-code';
 	import ShareIcon from '@lucide/svelte/icons/share-2';
 	import BarChartIcon from '@lucide/svelte/icons/bar-chart';
 	import ExternalLinkIcon from '@lucide/svelte/icons/external-link';
@@ -178,7 +177,7 @@
 
 			<div class={['grid gap-2', canShare ? 'grid-cols-2' : 'grid-cols-1']}>
 				<Button variant="secondary" size="lg" onclick={copyQr} disabled={!qrDataUrl}>
-					<QrCodeIcon class="size-4" />
+					<CopyIcon class="size-4" />
 					{m.manage_copy_qr()}
 				</Button>
 				{#if canShare}

@@ -83,7 +83,7 @@
 	"manage_share_link": "Share",
 	"manage_link_copied": "Link copied",
 	"manage_qr_alt": "QR code linking to the poll",
-	"manage_copy_qr": "Copy QR code",
+	"manage_copy_qr": "Copy",
 	"manage_qr_copied": "QR code copied",
 	"manage_qr_copy_failed": "Couldn't copy the QR code",
 	"manage_danger_zone_title": "Danger zone",
