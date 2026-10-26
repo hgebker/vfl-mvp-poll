@@ -7,5 +7,8 @@ if (!env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
 
 const client = new Database(env.DATABASE_URL);
 client.pragma('foreign_keys = ON');
+client.pragma('journal_mode = WAL');
+client.pragma('cache_size = -2000');
+client.pragma('mmap_size = 0');
 
 export const db = drizzle(client, { schema });

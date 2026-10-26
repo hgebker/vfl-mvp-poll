@@ -17,6 +17,7 @@ FROM node:24-alpine AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
+ENV NODE_OPTIONS="--max-old-space-size=128"
 COPY --from=pruned /app/build ./build
 COPY --from=pruned /app/node_modules ./node_modules
 COPY --from=pruned /app/package.json ./package.json
